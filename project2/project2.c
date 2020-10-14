@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "record.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -200,7 +201,7 @@ int main(int argc, char* argv[]) {
 			printHTML();
 		//Close pipe file descriptor and STDOUT
 			close(pipe);
-			close(stdout);
+			close("grades.html");
 		//Sleep for 1 second
 			sleep(1);
 		}
