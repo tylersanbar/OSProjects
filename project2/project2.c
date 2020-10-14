@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
 	//Testing
 	if (argc == 1) {
-		fprintf(stderr, "Not enough arguments");
+		fprintf(stderr, "Not enough arguments\n");
 		return -1;
 
 		//char* newArg[] = { "project2","html" };
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
 	//Command Line Arguments
 	if (strcmp(cmdArg, "append") == 0) {
 		if (argc != 6) {
-			fprintf(stderr, "Invalid Arguments");
+			fprintf(stderr, "Invalid Arguments\n");
 			return -1;
 		}
 		//Set Record
@@ -85,21 +85,21 @@ int main(int argc, char* argv[]) {
 		}
 		if (type != -1) record.type = type;
 		else {
-			fprintf(stderr, "No matching type");
+			fprintf(stderr, "No matching type\n");
 			return -1;
 		}
 		char check;
 		//Set Max Score
 		parser = sscanf(argv[4], "%f%c", &record.max_score,&check);
 		if(parser != 1) {
-			fprintf(stderr, "Invalid Max Score");
+			fprintf(stderr, "Invalid Max Score\n");
 			return -1;
 		}
 		
 		//Set Score
 		parser = sscanf(argv[5], "%f%c", &record.score,&check);
 		if (parser != 1) {
-			fprintf(stderr, "Invalid Score");
+			fprintf(stderr, "Invalid Score\n");
 			return -1;
 		}
 		//Write to end of file
@@ -109,14 +109,14 @@ int main(int argc, char* argv[]) {
 	}
 	else if (strcmp(cmdArg, "score") == 0) {
 		if (argc != 4) {
-			fprintf(stderr, "Invalid Arguments");
+			fprintf(stderr, "Invalid Arguments\n");
 			return -1;
 		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
 		if (current >= fileSize) {
-			fprintf(stderr, "Index does not exist.");
+			fprintf(stderr, "Index does not exist.\n");
 			return -1;
 		}
 		lseek(file, current, SEEK_SET);
@@ -132,14 +132,14 @@ int main(int argc, char* argv[]) {
 	}
 	else if (strcmp(cmdArg, "valid") == 0) {
 		if (argc != 3) {
-			fprintf(stderr, "Invalid Arguments");
+			fprintf(stderr, "Invalid Arguments\n");
 			return -1;
 		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
 		if (current >= fileSize) {
-			fprintf(stderr, "Index does not exist.");
+			fprintf(stderr, "Index does not exist.\n");
 			return -1;
 		}
 		lseek(file, current, SEEK_SET);
@@ -156,14 +156,14 @@ int main(int argc, char* argv[]) {
 	}
 	else if (strcmp(cmdArg, "invalid") == 0) {
 		if (argc != 3) {
-			fprintf(stderr, "Invalid Arguments");
+			fprintf(stderr, "Invalid Arguments\n");
 			return -1;
 		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
 		if (current >= fileSize) {
-			fprintf(stderr, "Index does not exist.");
+			fprintf(stderr, "Index does not exist.\n");
 			return -1;
 		}
 		lseek(file, current, SEEK_SET);
