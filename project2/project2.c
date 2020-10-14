@@ -108,6 +108,10 @@ int main(int argc, char* argv[]) {
 		write(file, buffer, ARSize);
 	}
 	else if (strcmp(cmdArg, "score") == 0) {
+		if (argc != 4) {
+			fprintf(stderr, "Invalid Arguments");
+			return -1;
+		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
@@ -127,6 +131,10 @@ int main(int argc, char* argv[]) {
 		write(file, buffer, ARSize);
 	}
 	else if (strcmp(cmdArg, "valid") == 0) {
+		if (argc != 3) {
+			fprintf(stderr, "Invalid Arguments");
+			return -1;
+		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
@@ -147,6 +155,10 @@ int main(int argc, char* argv[]) {
 		write(file, buffer, ARSize);
 	}
 	else if (strcmp(cmdArg, "invalid") == 0) {
+		if (argc != 3) {
+			fprintf(stderr, "Invalid Arguments");
+			return -1;
+		}
 		//Parse Index
 		parser = sscanf(argv[2], "%d", &index);
 		current = ARSize * index;
