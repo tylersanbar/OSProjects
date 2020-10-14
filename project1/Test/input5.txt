@@ -1,0 +1,21 @@
+0
+d
+w 0
+S 30 Baumwipfelpfad
+i 0
+d
+w 1
+w 2
+r 0
+i 0
+d
+I 20 1138
+i 0
+d
+w 3
+r 2
+i 0
+d
+r 3
+i 0
+d

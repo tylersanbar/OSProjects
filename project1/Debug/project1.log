@@ -1,0 +1,11 @@
+﻿  project1.c
+C:\Users\tyler\source\repos\project0\project1\project1.c(42,17): warning C4013: 'open' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\project0\project1\project1.c(109,52): warning C4244: '=': conversion from 'long' to 'unsigned char', possible loss of data
+C:\Users\tyler\source\repos\project0\project1\project1.c(166,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tyler\source\repos\project0\project1\project1.c(217,9): warning C4013: 'lseek' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\project0\project1\project1.c(218,9): warning C4013: 'write' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\project0\project1\project1.c(228,8): warning C4013: 'read' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\project0\project1\project1.c(263,7): warning C4013: 'close' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\project0\project1\project1.c(18,6): warning C4101: 'block': unreferenced local variable
+C:\Users\tyler\source\repos\project0\project1\project1.c(22,16): warning C4101: 'hexVal': unreferenced local variable
+  project1.vcxproj -> C:\Users\tyler\source\repos\project0\Debug\project1.exe

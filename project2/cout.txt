@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<TITLE>CS 3113 Grades</TITLE>
+</HEAD>
+<BODY>
+<H1>CS 3113 Grades</H1>
+<H2>Valid Grades</H2>
+<TABLE BORDER=2>
+<TR>
+<TD> <B>Index</B>
+<TD> <B>Assignment Name</B>
+<TD> <B>Assignment Type</B>
+<TD> <B>Score</B>
+<TD> <B>Max Score</B>
+<TR>
+<TD> 0
+<TD> Project 1
+<TD> PROJECT
+<TD> 89.00
+<TD> 100.00
+</TABLE>
+<P>
+<B>Average score: 89.00 percent</B>
+<P>
+<H2>Non-Valid Grades</H2>
+<TABLE BORDER=2>
+<TR>
+<TD> <B>Index</B>
+<TD> <B>Assignment Name</B>
+<TD> <B>Assignment Type</B>
+<TD> <B>Score</B>
+<TD> <B>Max Score</B>
+</TABLE>
+<P>
+<H2>References</H2>
+<UL>
+<LI><A HREF="https://cs.ou.edu/~fagg/classes/cs3113">Introduction to Operating Systems</A>
+<LI><A HREF="https://cs.ou.edu">Computer Science Department</A>
+</UL>
+<P>
+</BODY>
+</HTML>

@@ -1,0 +1,2 @@
+﻿project2.obj : error LNK2019: unresolved external symbol _sleep referenced in function _main
+C:\Users\tyler\source\repos\project0\Debug\project2.exe : fatal error LNK1120: 1 unresolved externals
