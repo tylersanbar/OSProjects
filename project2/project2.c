@@ -200,7 +200,7 @@ int main(int argc, char* argv[]) {
 		//Print full HTML output to STDOUT
 			printHTML();
 		//Close pipe file descriptor and STDOUT
-			close(pipe);
+			close(1);
 			//close("grades.html");
 		//Sleep for 1 second
 			sleep(1);
