@@ -201,7 +201,7 @@ int main(int argc, char* argv[]) {
 			printHTML();
 		//Close pipe file descriptor and STDOUT
 			close(pipe);
-			close("grades.html");
+			//close("grades.html");
 		//Sleep for 1 second
 			sleep(1);
 		}
