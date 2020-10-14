@@ -8,7 +8,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+//Function Definitions
 int printHTML();
+
 //Back-End Database---------------------
 //database stored in file called grades.bin
 //When program starts, open grades.bin for reading and writing, create if doesn't exist
