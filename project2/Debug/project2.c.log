@@ -1,2 +1,13 @@
-﻿project2.obj : error LNK2019: unresolved external symbol _sleep referenced in function _main
-C:\Users\tyler\source\repos\project0\Debug\project2.exe : fatal error LNK1120: 1 unresolved externals
+﻿  project2.c
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(55,17): warning C4013: 'open' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(60,18): warning C4013: 'lseek' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(106,8): warning C4013: 'write' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(118,7): warning C4013: 'read' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(184,8): warning C4013: 'dup2' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(188,9): warning C4013: 'close' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(191,9): warning C4013: 'sleep' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(173,1): warning C4090: 'initializing': different 'const' qualifiers
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(253,1): warning C4090: 'initializing': different 'const' qualifiers
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(287,1): warning C4090: 'initializing': different 'const' qualifiers
+project2.obj : error LNK2019: unresolved external symbol _sleep referenced in function _main
+C:\Users\tyler\source\repos\Intro to Operating Systems\Debug\project2.exe : fatal error LNK1120: 1 unresolved externals
