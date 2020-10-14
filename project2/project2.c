@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <fcntl.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include "record.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -185,7 +185,7 @@ int main(int argc, char* argv[]) {
 			current += ARSize;
 			read(file, buffer, ARSize);
 			memcpy(&record, &buffer, ARSize);
-			char* t = type_names[record.type];
+			const char* t = type_names[record.type];
 			printf("Name: %s\nType: %s\nMax Score:%f\nScore:%f\nValid?:%d\n", record.name, t, record.max_score, record.score, record.valid);
 		}
 	}
@@ -265,7 +265,7 @@ int printHTML() {
 		index += ARSize;
 		read(file, buffer, ARSize);
 		memcpy(&indexRecord, &buffer, ARSize);
-		char* t = type_names[indexRecord.type];
+		const char* t = type_names[indexRecord.type];
 		if (indexRecord.valid == 1) {
 			printf("<TR>\n<TD> %d\n<TD> %s\n<TD> %s\n<TD> %.2f\n<TD> %.2f\n", (index / ARSize - 1), indexRecord.name, t, indexRecord.score, indexRecord.max_score);
 			validScoreSum += indexRecord.score;
@@ -299,7 +299,7 @@ int printHTML() {
 		index += ARSize;
 		read(file, buffer, ARSize);
 		memcpy(&indexRecord, &buffer, ARSize);
-		char* t = type_names[indexRecord.type];
+		const char* t = type_names[indexRecord.type];
 		if (indexRecord.valid == 0) {
 			printf("<TR>\n<TD> %d\n<TD> %s\n<TD> %s\n<TD> %.2f\n<TD> %.2f\n", (index / ARSize - 1), indexRecord.name, t, indexRecord.score, indexRecord.max_score);
 			invalidScoreSum += indexRecord.score;

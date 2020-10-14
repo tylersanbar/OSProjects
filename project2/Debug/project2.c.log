@@ -1,13 +1,10 @@
 ﻿  project2.c
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(57,17): warning C4013: 'open' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(62,18): warning C4013: 'lseek' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(108,8): warning C4013: 'write' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(124,7): warning C4013: 'read' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(198,8): warning C4013: 'dup2' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(202,9): warning C4013: 'close' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(205,9): warning C4013: 'sleep' undefined; assuming extern returning int
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(187,1): warning C4090: 'initializing': different 'const' qualifiers
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(267,1): warning C4090: 'initializing': different 'const' qualifiers
-C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(301,1): warning C4090: 'initializing': different 'const' qualifiers
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(58,17): warning C4013: 'open' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(63,18): warning C4013: 'lseek' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(109,8): warning C4013: 'write' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(125,7): warning C4013: 'read' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(199,8): warning C4013: 'dup2' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(203,9): warning C4013: 'close' undefined; assuming extern returning int
+C:\Users\tyler\source\repos\Intro to Operating Systems\project2\project2.c(206,9): warning C4013: 'sleep' undefined; assuming extern returning int
 project2.obj : error LNK2019: unresolved external symbol _sleep referenced in function _main
 C:\Users\tyler\source\repos\Intro to Operating Systems\Debug\project2.exe : fatal error LNK1120: 1 unresolved externals
