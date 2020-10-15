@@ -192,24 +192,18 @@ int main(int argc, char* argv[]) {
 	else if (strcmp(cmdArg, "html") == 0) printHTML();
 	else if (strcmp(cmdArg, "server") == 0) {
 		//infinite loop
-		
+
 		while (1) {
 		//Open grades.html pipe in write mode. Block until a process opens the file for reading
 			int pipe = open("grades.html", O_WRONLY);
 		//Reroute pipe file descriptor to file descriptor 1
-			close(1);
+			if (pipe != 1) close(1);
 			dup2( pipe, 1);
 		//Print full HTML output to STDOUT
 			printHTML();
-			
 		//Close pipe file descriptor and STDOUT
-			
-			
 			close(pipe);
-			close(1);
-	
-			
-			//close("grades.html");
+			if (pipe != 1) close(1);
 		//Sleep for 1 second
 			sleep(1);
 		}
@@ -287,7 +281,7 @@ int printHTML() {
 		"<P>\n"
 	);
 	//Print Valid Average
-	if (numValid > 1) printf("<B>Average score: %.2f percent</B>\n", (validScoreSum * 100 / validMaxSum));
+	printf("<B>Average score: %.2f percent</B>\n", (validScoreSum * 100 / validMaxSum));
 	//Non Valid Grades Header
 	printf(
 		"<P>\n"
@@ -320,7 +314,7 @@ int printHTML() {
 		"<P>\n"
 	);
 	//Print Invalid Average
-	if (numInvalid > 1) printf("<B>Average score: %.2f percent</B>\n", (invalidScoreSum * 100 / invalidMaxSum));
+	//if (numInvalid > 1) printf("<B>Average score: %.2f percent</B>\n", (invalidScoreSum * 100 / invalidMaxSum));
 	printf(
 		"<H2>References</H2>\n"
 		"<UL>\n"
