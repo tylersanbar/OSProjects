@@ -192,15 +192,23 @@ int main(int argc, char* argv[]) {
 	else if (strcmp(cmdArg, "html") == 0) printHTML();
 	else if (strcmp(cmdArg, "server") == 0) {
 		//infinite loop
+		
 		while (1) {
 		//Open grades.html pipe in write mode. Block until a process opens the file for reading
 			int pipe = open("grades.html", O_WRONLY);
 		//Reroute pipe file descriptor to file descriptor 1
-			dup2(pipe, 1);
+			close(1);
+			dup2( pipe, 1);
 		//Print full HTML output to STDOUT
 			printHTML();
+			
 		//Close pipe file descriptor and STDOUT
+			
+			
+			close(pipe);
 			close(1);
+	
+			
 			//close("grades.html");
 		//Sleep for 1 second
 			sleep(1);
