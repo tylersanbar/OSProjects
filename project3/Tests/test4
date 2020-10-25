@@ -1,0 +1,68 @@
+#!/bin/bash
+# mkd + rmd + list test
+./myfs_format 64
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_list
+
+./myfs_mkd home
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_list 
+./myfs_list /home
+./myfs_rmd /home/doesnotexist
+
+./myfs_mkd home/skip
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/skip
+./myfs_rmd /home
+
+./myfs_mkd home/bob
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_inspect -dir 5
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/bob
+
+./myfs_mkd home/bob/mail
+./myfs_mkd home/bob/thisfilenameiswaytoolongtoworkproperly
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_inspect -dir 5
+./myfs_inspect -dir 6
+./myfs_inspect -dir 7
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/bob/thisfilenameiswaytoolongtoworkproperl
+
+./myfs_rmd /home
+./myfs_rmd /home/skip
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 5
+./myfs_inspect -dir 6
+./myfs_inspect -dir 7
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/bob/thisfilenameiswaytoolongtowor
+./myfs_list /home/bob/thisfilenameiswaytoolongtowo
+./myfs_list /home/bob/thisfilenameiswaytoolongtowork
+

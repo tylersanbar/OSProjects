@@ -1,0 +1,41 @@
+#!/bin/bash
+# mkd + list test
+./myfs_format 64
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_list
+
+./myfs_mkd home
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/doesnotexist
+
+./myfs_mkd home/bob
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/bob
+
+./myfs_mkd home/bob/mail
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_inspect -dir 5
+./myfs_list 
+./myfs_list /home
+./myfs_list /home/bob
+
+
+
+

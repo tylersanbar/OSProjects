@@ -1,0 +1,6 @@
+#!/bin/bash
+# Format test
+./myfs_format 64
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2

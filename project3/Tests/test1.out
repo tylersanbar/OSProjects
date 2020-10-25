@@ -1,0 +1,18 @@
+N_BLOCKS: 64
+N_ALLOCATED_BLOCKS: 3
+N_ALLOCATED_INDEX_NODES: 1
+Block allocation table:
+00: 07
+01: 00
+02: 00
+03: 00
+04: 00
+05: 00
+06: 00
+07: 00
+Relative Index Node 0	DIRECTORY	Nref=1	Content=2	size=2
+Next block: 65534
+Directory at block 2:
+Entry 0: name=".", index_node=0
+Entry 1: name="..", index_node=0
+Next block: 65534

@@ -1,0 +1,28 @@
+#!/bin/bash
+# MKD test (simple)
+./myfs_format 64
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_mkd home
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_mkd home/bob
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_mkd home/bob/mail
+./myfs_inspect -volume
+./myfs_inspect -iblock 1
+./myfs_inspect -dir 2
+./myfs_inspect -dir 3
+./myfs_inspect -dir 4
+./myfs_inspect -dir 5
+
+
+
+

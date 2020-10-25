@@ -5,4 +5,3 @@ project2: project2.c
 	mkfifo grades.html
 clean:
 	rm project2
-	rm grades.html
