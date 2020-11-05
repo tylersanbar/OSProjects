@@ -69,10 +69,31 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
   }
 
   BLOCK block;
-
+  block.next = UNALLOCATED_BLOCK;
   // :
+  memset(block.content.volume.block_allocation_table, 0, sizeof(block.content.volume.block_allocation_table));
+  block.content.volume.block_allocation_table[0] = 7;
+  block.content.volume.n_allocated_blocks = 3;
+  block.content.volume.n_allocated_index_nodes = 1;
+  block.content.volume.n_blocks = n_blocks;
+  vdisk_write_block(VOLUME_BLOCK_REFERENCE, &block);
   // :
+  INDEX_NODE dirNode;
+  dirNode.type = T_DIRECTORY;
+  dirNode.references = 1;
+  dirNode.content = ROOT_DIRECTORY_BLOCK;
+  dirNode.size = 2;
+  //
+  block.content.index_nodes.index_node[0] = dirNode;
+  vdisk_write_block(ROOT_INDEX_NODE_BLOCK, &block);
 
+  DIRECTORY_ENTRY entry;
+  entry.index_node_reference = 0;
+  strcpy(entry.name, ".");
+  block.content.directory.entry[0] = entry;
+  strcpy(entry.name, "..");
+  block.content.directory.entry[1] = entry;
+  vdisk_write_block(ROOT_DIRECTORY_BLOCK, &block);
   // Done
   vdisk_close();
  
