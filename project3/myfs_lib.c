@@ -81,6 +81,7 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
   block.content.volume.n_allocated_index_nodes = 1;
   block.content.volume.n_blocks = n_blocks;
   vdisk_write_block(VOLUME_BLOCK_REFERENCE, &block);
+  memset(&block, 0, sizeof(block));
   // :
   INDEX_NODE dirNode;
   dirNode.type = T_DIRECTORY;
@@ -90,6 +91,7 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
   //
   block.content.index_nodes.index_node[0] = dirNode;
   vdisk_write_block(ROOT_INDEX_NODE_BLOCK, &block);
+  memset(&block, 0, sizeof(block));
 
   DIRECTORY_ENTRY entry;
   entry.index_node_reference = 0;
@@ -98,6 +100,7 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
   strcpy(entry.name, "..");
   block.content.directory.entry[1] = entry;
   vdisk_write_block(ROOT_DIRECTORY_BLOCK, &block);
+  memset(&block, 0, sizeof(block));
   // Done
   vdisk_close();
  
