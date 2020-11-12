@@ -48,5 +48,5 @@ int main(int argc, char **argv)
   myfs_format_disk(disk_name, n_blocks);
 
   return(0);
-	
+
 }

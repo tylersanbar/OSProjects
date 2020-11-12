@@ -54,7 +54,7 @@ int myfs_read_index_node_by_reference(INDEX_NODE_REFERENCE r_index_node, INDEX_N
   // Block that contins the index node: read it first
   BLOCK b;
 
-  int ref = ROOT_INDEX_NODE_BLOCK;
+  BLOCK_REFERENCE ref = ROOT_INDEX_NODE_BLOCK;
 
   // Walk down the linked list of index nodes block to find the right one
   for(int i = 0; i < r_block && ref != UNALLOCATED_BLOCK; ++i) {
@@ -168,7 +168,7 @@ void myfs_clear_all_index_node_entries(BLOCK *index_node_block)
  * 
  */
 
-int myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name)
+INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name)
 {
   if(debug)
     fprintf(stderr,"\tDEBUG: myfs_find_entity_in_directory: %s\n", element_name);
@@ -192,7 +192,8 @@ int myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name)
       if(debug)
 	fprintf(stderr, "\tDEBUG: Check: %d %s with %s\n", i,
 		block.content.directory.entry[i].name, element_name);
-      if(strncmp(block.content.directory.entry[i].name, element_name, FILE_NAME_SIZE) == 0) {
+      if(block.content.directory.entry[i].index_node_reference != UNALLOCATED_INDEX_NODE &&
+	 strncmp(block.content.directory.entry[i].name, element_name, FILE_NAME_SIZE) == 0) {
 	// Match: we are done
 	if(debug)
 	  fprintf(stderr, "\tDEBUG: Match: %d\n", block.content.directory.entry[i].index_node_reference);

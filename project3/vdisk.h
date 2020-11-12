@@ -25,7 +25,7 @@ typedef unsigned short BLOCK_REFERENCE;
 #define BLOCK_SIZE 256 
 
 // Maximum number of blocks on a disk
-#define MAX_BLOCKS 1948
+#define MAX_BLOCKS 1920
 
 
 int vdisk_open(char *virtual_disk_name, int truncate_flag);

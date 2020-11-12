@@ -21,7 +21,7 @@ MYFILE* myfs_fopen(char *cwd, char *path, char *mode);
 void myfs_fclose(MYFILE *fp);
 int myfs_fwrite(MYFILE *fp, unsigned char * buf, int len);
 int myfs_fread(MYFILE *fp, unsigned char * buf, int len);
-int myfs_remove(char *cwd, char *path);
+int myfs_delete_file(char *cwd, char *path);
 int myfs_link(char *cwd, char *path_src, char *path_dst);
 
 #endif

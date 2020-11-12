@@ -14,7 +14,7 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *inode, BLOCK *block,
 				    INDEX_NODE_REFERENCE self_inode_reference,
 				    INDEX_NODE_REFERENCE parent_inode_reference);
 
-int myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name);
+INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name);
 int myfs_path_to_index_node(char *cwd, char * path, INDEX_NODE_REFERENCE *parent,
 			   INDEX_NODE_REFERENCE *child, char *local_name);
  
@@ -36,6 +36,8 @@ int myfs_append_new_block_to_existing_block(BLOCK *volume_block,
 void myfs_clear_all_index_node_entries(BLOCK *index_node_block);
 
 // Project 4
-INDEX_NODE_REFERENCE myfs_create_file(INDEX_NODE_REFERENCE parent, char *name);
+INDEX_NODE_REFERENCE myfs_create_file(BLOCK *volume_block,
+				      INDEX_NODE_REFERENCE parent, char *name);
+int myfs_delete_file(char *cwd, char*path);
 
 #endif
