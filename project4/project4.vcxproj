@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{bd417ee8-e455-4603-860b-971e9cb12176}</ProjectGuid>
-    <RootNamespace>project3</RootNamespace>
+    <ProjectGuid>{23836a74-04c9-4e8c-840e-31f51d456083}</ProjectGuid>
+    <RootNamespace>project4</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,23 +139,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="myfs_append.c" />
+    <ClCompile Include="myfs_copy.c" />
+    <ClCompile Include="myfs_create.c" />
+    <ClCompile Include="myfs_lib_skel_p4.c" />
+    <ClCompile Include="myfs_lib_support_skel_p4.c" />
+    <ClCompile Include="myfs_link.c" />
+    <ClCompile Include="myfs_mkp.c" />
+    <ClCompile Include="myfs_more.c" />
+    <ClCompile Include="myfs_move.c" />
+    <ClCompile Include="myfs_rm.c" />
+    <ClCompile Include="myfs_touch.c" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="myfs.h" />
     <ClInclude Include="myfs_lib.h" />
     <ClInclude Include="myfs_lib_support.h" />
-    <ClInclude Include="vdisk.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="myfs_format.c" />
-    <ClCompile Include="myfs_inspect.c" />
-    <ClCompile Include="myfs_lib.c" />
-    <ClCompile Include="myfs_lib_skel.c" />
-    <ClCompile Include="myfs_lib_support.c" />
-    <ClCompile Include="myfs_lib_support_skel.c" />
-    <ClCompile Include="myfs_list.c" />
-    <ClCompile Include="myfs_mkd.c" />
-    <ClCompile Include="myfs_rmd.c" />
-    <ClCompile Include="myfs_stats.c" />
-    <ClCompile Include="vdisk.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

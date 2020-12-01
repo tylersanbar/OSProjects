@@ -15,52 +15,49 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myfs_lib.h">
+    <ClCompile Include="myfs_append.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_copy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_create.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_lib_skel_p4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_lib_support_skel_p4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_link.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_mkp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_more.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_rm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_touch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="myfs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="myfs.h">
+    <ClInclude Include="myfs_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="myfs_lib_support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vdisk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="myfs_format.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_inspect.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib_skel.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib_support.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib_support_skel.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_list.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_mkd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_rmd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_stats.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vdisk.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

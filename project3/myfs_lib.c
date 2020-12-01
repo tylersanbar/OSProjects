@@ -137,6 +137,14 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
 
 int myfs_list(char *cwd, char *path)
 {
+    INDEX_NODE_REFERENCE* parent;
+    INDEX_NODE* child;
+    char* local_name;
+    if (myfs_path_to_index_node(cwd, path, parent, child, local_name) != 0) {
+        return(-3);
+    }
+    INDEX_NODE** nodeList = child->(DIRECTORYcontent
+    qsort()
 }
 
 
