@@ -233,7 +233,7 @@ int myfs_mkd(char *cwd, char *path)
     }
     //-----------------------INDEX NODES----------------
     //Get index references and local name from path
-    if (myfs_path_to_index_node(cwd, path, parentIndexRef, newIndexRef, local_name) != -1) {
+    if (myfs_path_to_index_node(cwd, path, &parentIndexRef, &newIndexRef, local_name) != -1) {
         fprintf(stderr, "Invalid path.\n");
         return(-1);
     }
@@ -248,13 +248,13 @@ int myfs_mkd(char *cwd, char *path)
         return(-3);
     }
     //Assign new an index node reference
-    newIndexRef = myfs_find_index_node_hole(lastBlock, lastRef);
+    newIndexRef = myfs_find_index_node_hole(&lastBlock, &lastRef);
     //If none are available, allocate new index node block
     if (newIndexRef == UNALLOCATED_INDEX_NODE) {
         //new will refer to the next index node after the last one found
         newIndexRef = lastRef++;
         //Append the new index node block to the last index node block
-        if (myfs_append_new_block_to_existing_block(&volume, &lastBlock, lastRef) != 0) {
+        if (myfs_append_new_block_to_existing_block(&volume, &lastBlock, &lastRef) != 0) {
             fprintf(stderr, "Unable to append new index node block");
             return(-1);
         }
@@ -272,9 +272,9 @@ int myfs_mkd(char *cwd, char *path)
     strncpy(newEntry.name, local_name, FILE_NAME_SIZE);
     //Find directory hole in parent
     //If 0, append new directory block
-    if (myfs_find_directory_hole(parentIndexNode.content, &lastBlock, lastRef, entryIndex) == 0) {
+    if (myfs_find_directory_hole(parentIndexNode.content, &lastBlock, &lastRef, &entryIndex) == 0) {
         //Append new directory block
-        if (myfs_append_new_block_to_existing_block(&volume, &lastBlock, lastRef) != 0) {
+        if (myfs_append_new_block_to_existing_block(&volume, &lastBlock, &lastRef) != 0) {
             fprintf(stderr, "Unable to append new directory block.");
             return(-1);
         }
@@ -339,7 +339,7 @@ int myfs_rmd(char *cwd, char *path)
         return (-4);
     }
     //Get index nodes for parent and directory to remove
-    myfs_path_to_index_node(cwd, path, parentIndexRef, removeIndexRef, local_name);
+    myfs_path_to_index_node(cwd, path, &parentIndexRef, &removeIndexRef, local_name);
     //If it doesn't exist, error
     if (removeIndexRef == UNALLOCATED_BLOCK) {
         fprintf(stderr, "Directory does not exist.\n");
