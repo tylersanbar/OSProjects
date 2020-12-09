@@ -150,11 +150,13 @@
     <ClCompile Include="myfs_move.c" />
     <ClCompile Include="myfs_rm.c" />
     <ClCompile Include="myfs_touch.c" />
+    <ClCompile Include="vdisk.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myfs.h" />
     <ClInclude Include="myfs_lib.h" />
     <ClInclude Include="myfs_lib_support.h" />
+    <ClInclude Include="vdisk.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

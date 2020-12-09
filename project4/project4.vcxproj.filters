@@ -48,6 +48,9 @@
     <ClCompile Include="myfs_touch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vdisk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myfs.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="myfs_lib_support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vdisk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -70,7 +70,12 @@ int myfs_format_disk(char  *virtual_disk_name, int n_blocks)
 
   BLOCK block;
 
-  // :
+  // Zero out block
+  memset(&block, 0, BLOCK_SIZE);
+  //Look throught each block and set it to zero block
+  for (int i = 0; i < n_blocks; i++) {
+      if(vdisk_write_block( i, &block) < 0)
+  }
   // :
 
   // Done

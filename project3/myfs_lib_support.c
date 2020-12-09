@@ -89,7 +89,7 @@ int myfs_read_index_node_by_reference(INDEX_NODE_REFERENCE r_index_node, INDEX_N
  * Write a single index node to the disk
  *
  * @param r_index_node  (IN) Index node reference index
- * @param index_node    (OUT) Pointer to an index node structure to write
+ * @param index_node    (IN) Pointer to an index node structure to write
  * @return 0 if success
  *         -x if error
  *
@@ -100,9 +100,46 @@ int myfs_write_index_node_by_reference(INDEX_NODE_REFERENCE r_index_node, INDEX_
   if(debug)
     fprintf(stderr, "\tDEBUG: Writing index node %d\n", r_index_node);
 
-  //
-  //
+  // Find the address of the index node
 
+  // Relative block
+  BLOCK_REFERENCE r_block = r_index_node / N_INDEX_NODES_PER_BLOCK;
+
+  // elemnt within the block
+  int element = (r_index_node % N_INDEX_NODES_PER_BLOCK);
+
+  // Block that contins the index node: read it first
+  BLOCK b;
+
+  int ref = ROOT_INDEX_NODE_BLOCK;
+
+  // Walk down the linked list of index nodes block to find the right one
+  for (int i = 0; i < r_block && ref != UNALLOCATED_BLOCK; ++i) {
+      // Get the disk block
+      if (vdisk_read_block(ref, &b) != 0) {
+          return(-1);
+      }
+      // Fetch the next block
+      ref = b.next;
+  }
+
+  // Check that we have a valid block
+  if (ref == UNALLOCATED_BLOCK) {
+      return(-1);
+  }
+
+  // Read the block that contains the index node
+  if (vdisk_read_block(ref, &b) != 0) {
+      return(-1);
+  }
+
+  // Copy the contents of index node pointer into the read index node array
+  memcpy(&b.content.index_nodes.index_node[element], index_node, sizeof(INDEX_NODE));
+
+  //Write the modified block back to the disk
+  if (vdisk_write_block(ref, &b) != 0) {
+      return(-1);
+  }
   // Success
   return(0);
 }
@@ -128,6 +165,16 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *index_node, BLOCK *blo
 				    INDEX_NODE_REFERENCE self_index_node_reference,
 				    INDEX_NODE_REFERENCE parent_index_node_reference)
 {
+    //Initialize index node
+    myfs_set_index_node(index_node, T_DIRECTORY, 1, self_block_reference, 2);
+    //Set block as directory with cleared entries
+    myfs_clear_all_directory_entries(block);
+    //Add self entry "."
+    block->content.directory.entry[0].index_node_reference = self_index_node_reference;
+    *block->content.directory.entry[0].name = ".";
+    //Add parent entry ".."
+    block->content.directory.entry[1].index_node_reference = parent_index_node_reference;
+    *block->content.directory.entry[1].name = "..";
 }
 
 /**
@@ -140,6 +187,11 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *index_node, BLOCK *blo
  */
 void myfs_clear_all_directory_entries(BLOCK *directory_block)
 {
+    for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
+        directory_block->content.directory.entry[i].name == "";
+        directory_block->content.directory.entry[i].index_node_reference = UNALLOCATED_INDEX_NODE;
+    }
+    
 }
 
 
@@ -153,7 +205,12 @@ void myfs_clear_all_directory_entries(BLOCK *directory_block)
 void myfs_clear_all_index_node_entries(BLOCK *index_node_block)
 {
   INDEX_NODE index_node;
-
+  //Set index node
+  myfs_set_index_node(&index_node, T_UNUSED, 0, UNALLOCATED_BLOCK, 0);
+  //Set entries in index node block to index node
+  for (int i = 0; i < N_INDEX_NODES_PER_BLOCK; i++) {
+      index_node_block->content.index_nodes.index_node[i] = index_node;
+  }
 }
 
 /*
@@ -354,12 +411,42 @@ int myfs_path_to_index_node(char *cwd, char * path, INDEX_NODE_REFERENCE *parent
                                    undefined if there is no hole			   
 				   
  */
+
 int myfs_find_directory_hole(BLOCK_REFERENCE head_directory_block_ref,
-			     BLOCK *directory_block,
-			     BLOCK_REFERENCE *directory_block_ref,
-			     int *directory_index)
+    BLOCK* directory_block,
+    BLOCK_REFERENCE* directory_block_ref,
+    int* directory_index)
 {
-  
+    *directory_block_ref = head_directory_block_ref;
+    int last_block_ref = UNALLOCATED_BLOCK;
+
+    while (*directory_block_ref != UNALLOCATED_BLOCK) {
+        // Remember last valid block reference
+        last_block_ref = *directory_block_ref;
+
+        // Read the block
+        if (vdisk_read_block(*directory_block_ref, directory_block) < 0) {
+            fprintf(stderr, "Unable to read directory block\n");
+            exit(-1);
+        }
+
+        // Scan through the directory entries
+        for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; ++i) {
+            if (directory_block->content.directory.entry[i].index_node_reference == UNALLOCATED_INDEX_NODE) {
+                // Found a hole!
+                *directory_index = i;
+                return(1);
+            }
+        }
+
+        // Move to the next directory block
+        *directory_block_ref = directory_block->next;
+    }
+
+    // Not found
+    // Provide the block ref for the last directory block
+    *directory_block_ref = last_block_ref;
+    return(0);
 }
 
 /**
@@ -371,10 +458,34 @@ int myfs_find_directory_hole(BLOCK_REFERENCE head_directory_block_ref,
 			     Note: updates not written to disk
    @param block_ref    (IN) Pointer to block reference for the existing block
                        (OUT) Contents replaced with the newly allocated block reference
+   @return int         Returns 0 if success
  */
 int myfs_append_new_block_to_existing_block(BLOCK *volume_block,
 					    BLOCK *block, BLOCK_REFERENCE *block_ref)
 {
+    //Allocate new block and get block reference
+    BLOCK_REFERENCE newRef = myfs_allocate_new_block(volume_block);
+    //If no space for new block, return unallocated block
+    if (newRef == UNALLOCATED_BLOCK) {
+        fprintf(stderr, "Unable to allocate new block, append failed.");
+        return UNALLOCATED_BLOCK;
+    }
+    BLOCK newBlock;
+    //Set appended block to existing block's next reference
+    newBlock.next = block->next;
+    //Set existing block's next to appended block reference
+    block->next = newRef;
+    //Write changes to existing block to disk
+    if (vdisk_write_block(block_ref, block) < 0) {
+        // Fatal error
+        fprintf(stderr, "myfs_append_new_block_to_existing_block: Unable to write block %d\n", block_ref);
+        exit(-1);
+    }
+    //Rereference input to new block
+    *block = newBlock;
+    *block_ref = newRef;
+    //Return success
+    return 0;
 }
 
 /**
@@ -383,12 +494,36 @@ int myfs_append_new_block_to_existing_block(BLOCK *volume_block,
    @param index_node_block (OUT) Last block of the linked list
    @param index_block_ref  (OUT) Last block ref in the linked list
  */
-INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK *index_node_block,
-					       BLOCK_REFERENCE *index_block_ref)
+INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK* index_node_block,
+    BLOCK_REFERENCE* index_block_ref)
 {
-  
-}
+    BLOCK_REFERENCE bref = ROOT_INDEX_NODE_BLOCK;
+    INDEX_NODE_REFERENCE ret = 0;
 
+    while (bref != UNALLOCATED_BLOCK) {
+        *index_block_ref = bref;
+        // Load the block
+        if (vdisk_read_block(bref, index_node_block) < 0) {
+            // Fatal error
+            fprintf(stderr, "myfs_find_index_node_hole: Unable to read block %d\n", bref);
+            exit(-1);
+        }
+
+        // Scan the block for unused entries
+        for (int i = 0; i < N_INDEX_NODES_PER_BLOCK; ++i, ++ret) {
+            if (index_node_block->content.index_nodes.index_node[i].type == T_UNUSED) {
+                // Found one!
+                return(ret);
+            }
+        }
+
+        // Not found in this block. Go to the next one in the linked list
+        bref = index_node_block->next;
+    }
+
+    // Not found at all
+    return(UNALLOCATED_INDEX_NODE);
+}
 
 /**
  * Return the bit index for the first 0 bit in a byte (starting from 7th bit
@@ -401,6 +536,14 @@ INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK *index_node_block,
 
 int myfs_find_open_bit(unsigned char value)
 {
+    for (int i = 0; i < 8; i++) {
+        //If least significant bit is equal to 0, return index
+        if ((value & 1) == 0) return i;
+        //Check next bit
+        value >> 1;
+    }
+    //No zero bit found
+    return -1;
 }
 
 /**
@@ -417,6 +560,31 @@ int myfs_find_open_bit(unsigned char value)
  */
 BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
 {
+    BLOCK_REFERENCE free_ref;
+    //If volume block is full, return UNALLOCATED_BLOCK
+    if (volume_block->content.volume.n_allocated_blocks >= volume_block->content.volume.n_blocks) {
+        fprintf(stderr, "Unable to allocate block, no free blocks available.\n");
+        return UNALLOCATED_BLOCK;
+    }
+    //Find unallocated block
+    for (int i = 0; i < sizeof(volume_block->content.volume.block_allocation_table); i++) {
+        //If byte has unallocated blocks
+        if (volume_block->content.volume.block_allocation_table[i] < sizeof(unsigned char)) {
+            //Find the open bit
+            int openBit = myfs_find_open_bit(volume_block->content.volume.block_allocation_table[i]);
+            //Set the free reference variable to (byte index * 8 + openBit)
+            free_ref = (i * 8) + openBit;
+            //Set found open bit to 1
+            volume_block->content.volume.block_allocation_table[i] = volume_block->content.volume.block_allocation_table[i] | (1 << openBit);
+            //Increment number of allocated blocks
+            volume_block->content.volume.n_allocated_blocks++;
+            //Return block reference
+            return free_ref;
+        }
+    }
+    //If we didn't find an unallocated block, big woops error
+    fprintf(stderr, "Volume block's number of allocated blocks indicated it was not full, but block allocation table was full. Error.");
+    return UNALLOCATED_BLOCK;
 }
 
 /***
@@ -430,6 +598,30 @@ BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
 
 int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
 {
+    BLOCK dir_block;
+    //Read the directory block
+    if (vdisk_read_block(dir_ref, &dir_block) < 0) {
+        fprintf(stderr, "Unable to read directory block\n");
+        exit(-1);
+    }
+    //Search through the linked list of directory blocks
+    while (dir_block.next != UNALLOCATED_BLOCK) {
+        //For each entry in directory block
+        for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
+            //If if the entry matches
+            if (strcmp(dir_block.content.directory.entry[i].name, name) == 0) {
+                //Set the name to the empty string
+                *dir_block.content.directory.entry[i].name = "";
+                //Set index node reference to UNALLOCATED_INDEX_NODE
+                dir_block.content.directory.entry[i].index_node_reference = UNALLOCATED_INDEX_NODE;
+                //Return success
+                return 0;
+            }
+        }
+    }
+    //If we didn't find any entries, return error
+    fprintf(stderr, "Directory entry not found.\n");
+    return -1;
 }
 
 
@@ -449,5 +641,35 @@ int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
  */
 int myfs_deallocate_blocks(BLOCK *volume_block, BLOCK_REFERENCE bref)
 {
+    if (bref > UNALLOCATED_BLOCK | bref < 0) {
+        fprintf(stderr, "Trying to deallocate an invalid block reference, error");
+        return -1;
+    }
+    BLOCK block;
+    BLOCK_REFERENCE nextBlock;
+    //While we still have blocks in the linked list
+    while (bref != UNALLOCATED_BLOCK) {
+        //Set bit at (BLOCK_REFERENCE % 8) in byte located at (BLOCK_REFERENCE / 8) to 0
+        volume_block->content.volume.block_allocation_table[bref / 8] = (volume_block->content.volume.block_allocation_table[bref / 8] ^ (1 << (bref % 8)));
+        //Read block
+        if (vdisk_read_block(bref, &block) < 0) {
+            fprintf(stderr, "Unable to read block\n");
+            exit(-1);
+        }
+        //Get next block
+        nextBlock = block.next;
+        //Set next block to unallocated
+        block.next = UNALLOCATED_BLOCK;
+        //Write block
+        if (vdisk_write_block(bref, &block) < 0) {
+            fprintf(stderr, "Unable to write block\n");
+            exit(-1);
+        }
+        //Set bref to next
+        bref = nextBlock;
+    }
+    volume_block->content.volume.n_allocated_blocks--;
+    //Success
+    return 0;
 };
 
