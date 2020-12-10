@@ -187,7 +187,8 @@ int myfs_list(char* cwd, char* path)
         //Next block we will check
         bRef = directoryBlock.next;
         //Check each entry in directory
-        for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
+        for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
+            printf("Checking entry %d.\n", i);
             //Get reference for index node
             new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
             //If entry is valid, add to list
