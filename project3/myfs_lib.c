@@ -136,80 +136,80 @@ int myfs_format_disk(char* virtual_disk_name, int n_blocks)
 
 int myfs_list(char* cwd, char* path)
 {
-    if (debug) {
-        fprintf(stderr, "Listing directories with cwd = %s and path = %s.\n", cwd, path);
-        exit(-1);
-    }
-    INDEX_NODE_REFERENCE parent_Ref;
-    INDEX_NODE_REFERENCE new_Ref;
-    INDEX_NODE new;
-    char local_name[MAX_PATH_LENGTH];
-    //If no arguments provided for List, prepend cwd to path
-    if (strcmp(path, "") == 0) strcat(path, cwd);
-    if (debug) {
-        fprintf(stderr, "No path provided, using %s.", path);
-        return -1;
-    }
-    //Get index node references and local name
-    int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
-    if (pathReturn != 0) {
-        if (pathReturn == -1) {
-            fprintf(stderr, "File or directory does not exist.\n");
-            return (-1);
-        }
-        fprintf(stderr, "Error finding path to file or directory.\n");
-        return(-3);
-    }
-    if (debug) {
-        fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
-    }
-    //Check if index node is a directory, if not, print name
-    myfs_read_index_node_by_reference(new_Ref, &new);
-    if (new.type != T_DIRECTORY) {
-        printf("%s\n", local_name);
-        return(0);
-    }
-    //Add "/" to local name
-    //strcat(local_name,"/");
-    //Make array of strings with max number of directory entries
-    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
-    //Add local name to contents
-    strcpy(contents[0], local_name);
-    //Next concents index
-    int numOfElements = 1;
-    //Initialize directory block and reference
-    BLOCK directoryBlock;
-    BLOCK_REFERENCE bRef = new.content;
+    //if (debug) {
+    //    fprintf(stderr, "Listing directories with cwd = %s and path = %s.\n", cwd, path);
+    //    exit(-1);
+    //}
+    //INDEX_NODE_REFERENCE parent_Ref;
+    //INDEX_NODE_REFERENCE new_Ref;
+    //INDEX_NODE new;
+    //char local_name[MAX_PATH_LENGTH];
+    ////If no arguments provided for List, prepend cwd to path
+    //if (strcmp(path, "") == 0) strcat(path, cwd);
+    //if (debug) {
+    //    fprintf(stderr, "No path provided, using %s.", path);
+    //    return -1;
+    //}
+    ////Get index node references and local name
+    //int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
+    //if (pathReturn != 0) {
+    //    if (pathReturn == -1) {
+    //        fprintf(stderr, "File or directory does not exist.\n");
+    //        return (-1);
+    //    }
+    //    fprintf(stderr, "Error finding path to file or directory.\n");
+    //    return(-3);
+    //}
+    //if (debug) {
+    //    fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
+    //}
+    ////Check if index node is a directory, if not, print name
+    //myfs_read_index_node_by_reference(new_Ref, &new);
+    //if (new.type != T_DIRECTORY) {
+    //    printf("%s\n", local_name);
+    //    return(0);
+    //}
+    ////Add "/" to local name
+    ////strcat(local_name,"/");
+    ////Make array of strings with max number of directory entries
+    //char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
+    ////Add local name to contents
+    //strcpy(contents[0], local_name);
+    ////Next concents index
+    //int numOfElements = 1;
+    ////Initialize directory block and reference
+    //BLOCK directoryBlock;
+    //BLOCK_REFERENCE bRef = new.content;
 
-    //Loop through linked list of directory blocks
-    while (bRef != UNALLOCATED_BLOCK) {
-        //Read directory block from index node
-        if (vdisk_read_block(bRef, &directoryBlock) != 0) {
-            return(-1);
-        }
-        //Check each entry in directory
-        for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
-            //Get reference for index node
-            new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
-            //If entry contains a directory, add to list
-            if (new_Ref != UNALLOCATED_INDEX_NODE) {
-                //Get name of entry
-                strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
-                //Get entry index node to check if it is a directory
-                myfs_read_index_node_by_reference(new_Ref, &new);
-                //If it is, add "/"
-                if(new.type == T_DIRECTORY) strcat(local_name,"/");
-                //Add name to list of contents
-                strcpy(contents[numOfElements++],local_name);
-            }
-        }
-    }
-    //Sort list of names
-    qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
-    //Print the sorted list of names
-    for (int i = 0; i < numOfElements; i++) {
-        printf("%s\n",contents[i]);
-    }
+    ////Loop through linked list of directory blocks
+    //while (bRef != UNALLOCATED_BLOCK) {
+    //    //Read directory block from index node
+    //    if (vdisk_read_block(bRef, &directoryBlock) != 0) {
+    //        return(-1);
+    //    }
+    //    //Check each entry in directory
+    //    for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
+    //        //Get reference for index node
+    //        new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
+    //        //If entry contains a directory, add to list
+    //        if (new_Ref != UNALLOCATED_INDEX_NODE) {
+    //            //Get name of entry
+    //            strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
+    //            //Get entry index node to check if it is a directory
+    //            myfs_read_index_node_by_reference(new_Ref, &new);
+    //            //If it is, add "/"
+    //            if(new.type == T_DIRECTORY) strcat(local_name,"/");
+    //            //Add name to list of contents
+    //            strcpy(contents[numOfElements++],local_name);
+    //        }
+    //    }
+    //}
+    ////Sort list of names
+    //qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
+    ////Print the sorted list of names
+    //for (int i = 0; i < numOfElements; i++) {
+    //    printf("%s\n",contents[i]);
+    //}
     return(0);
 }
 
