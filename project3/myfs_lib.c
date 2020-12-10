@@ -163,7 +163,9 @@ int myfs_list(char* cwd, char* path)
         fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
     }
     //Check if index node is a directory, if not, print name
-    myfs_read_index_node_by_reference(new_Ref, &new);
+    if (myfs_read_index_node_by_reference(new_Ref, &new) != 0) {
+        fprintf(stderr, "Unable to read index node.\n");
+    }
     if (new.type != T_DIRECTORY) {
         printf("%s\n", local_name);
         return(0);
@@ -171,7 +173,7 @@ int myfs_list(char* cwd, char* path)
     //Add "/" to local name
     //strcat(local_name,"/");
     //Make array of strings with max number of directory entries
-    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
+    //char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
     //Add local name to contents
     //strncpy(contents[0], local_name,MAX_PATH_LENGTH);
     //Next concents index
