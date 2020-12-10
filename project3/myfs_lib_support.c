@@ -617,13 +617,13 @@ BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
 int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
 {
     BLOCK dir_block;
-    //Read the directory block
-    if (vdisk_read_block(dir_ref, &dir_block) < 0) {
-        fprintf(stderr, "Unable to read directory block\n");
-        exit(-1);
-    }
     //Search through the linked list of directory blocks
-    while (dir_block.next != UNALLOCATED_BLOCK) {
+    while (dir_ref != UNALLOCATED_BLOCK) {
+        //Read the directory block
+        if (vdisk_read_block(dir_ref, &dir_block) < 0) {
+            fprintf(stderr, "Unable to read directory block\n");
+            exit(-1);
+        }
         //For each entry in directory block
         for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
             //If if the entry matches
@@ -636,6 +636,7 @@ int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
                 return 0;
             }
         }
+        dir_ref = dir_block.next;
     }
     //If we didn't find any entries, return error
     fprintf(stderr, "Directory entry not found.\n");
