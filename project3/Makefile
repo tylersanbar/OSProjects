@@ -14,4 +14,10 @@ all:
 	gcc $(STATS).c $(LIB) -o $(STATS)
 	zip project3.zip *.c *.h Makefile README.txt
 clean:
-
+	rm $(FORMAT)
+	rm $(INSPECT)
+	rm $(LIST)
+	rm $(MKD)
+	rm $(RMD)
+	rm $(STATS)
+	rm project3.zip
