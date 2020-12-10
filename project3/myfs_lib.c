@@ -142,16 +142,14 @@ int myfs_list(char* cwd, char* path)
     INDEX_NODE_REFERENCE parent_Ref;
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
+    char newPath[MAX_PATH_LENGTH];
     char local_name[MAX_PATH_LENGTH];
-    if (debug) {
-        fprintf(stderr, "No path provided, using %s.\n", path);
-        exit(-1);
-    }
+    //Assign path to modifiable string
+    strcpy(newPath, path);
     //If no arguments provided for List, prepend cwd to path
-    if (strcmp(path, "") == 0) strcat(path, cwd);
-
+    if (strcmp(newPath, "") == 0) strcpy(newPath, cwd);
     //Get index node references and local name
-    int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
+    int pathReturn = myfs_path_to_index_node(cwd, newPath, &parent_Ref, &new_Ref, local_name);
     if (pathReturn != 0) {
         if (pathReturn == -1) {
             fprintf(stderr, "File or directory does not exist.\n");
