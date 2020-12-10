@@ -47,21 +47,12 @@ Next block: 65534
 home/
 ../
 ./
-N_BLOCKS: 64
-N_ALLOCATED_BLOCKS: 5
-N_ALLOCATED_INDEX_NODES: 3
+N_BLOCKS: 0
+N_ALLOCATED_BLOCKS: 0
+N_ALLOCATED_INDEX_NODES: 0
 Block allocation table:
-00: 1f
-01: 00
-02: 00
-03: 00
-04: 00
-05: 00
-06: 00
-07: 00
 Relative Index Node 0	DIRECTORY	Nref=1	Content=2	size=3
 Relative Index Node 1	DIRECTORY	Nref=1	Content=3	size=3
-Relative Index Node 2	DIRECTORY	Nref=1	Content=4	size=2
 Next block: 65534
 Directory at block 2:
 Entry 0: name=".", index_node=0
@@ -74,33 +65,27 @@ Entry 1: name="..", index_node=0
 Entry 2: name="skip", index_node=2
 Next block: 65534
 Directory at block 4:
-Entry 0: name=".", index_node=2
-Entry 1: name="..", index_node=1
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 ../
 ./
 home/
 ../
 ./
-skip/
-../
-./
-N_BLOCKS: 64
-N_ALLOCATED_BLOCKS: 6
-N_ALLOCATED_INDEX_NODES: 4
+skip
+skip
+N_BLOCKS: 0
+N_ALLOCATED_BLOCKS: 0
+N_ALLOCATED_INDEX_NODES: 0
 Block allocation table:
-00: 3f
-01: 00
-02: 00
-03: 00
-04: 00
-05: 00
-06: 00
-07: 00
 Relative Index Node 0	DIRECTORY	Nref=1	Content=2	size=3
 Relative Index Node 1	DIRECTORY	Nref=1	Content=3	size=4
-Relative Index Node 2	DIRECTORY	Nref=1	Content=4	size=2
-Relative Index Node 3	DIRECTORY	Nref=1	Content=5	size=2
 Next block: 65534
 Directory at block 2:
 Entry 0: name=".", index_node=0
@@ -111,43 +96,40 @@ Directory at block 3:
 Entry 0: name=".", index_node=1
 Entry 1: name="..", index_node=0
 Entry 2: name="skip", index_node=2
-Entry 3: name="bob", index_node=3
+Entry 3: name="bob", index_node=2
 Next block: 65534
 Directory at block 4:
-Entry 0: name=".", index_node=2
-Entry 1: name="..", index_node=1
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 5:
-Entry 0: name=".", index_node=3
-Entry 1: name="..", index_node=1
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 ../
 ./
 home/
 ../
 ./
-bob/
-skip/
-../
-./
-N_BLOCKS: 64
-N_ALLOCATED_BLOCKS: 8
-N_ALLOCATED_INDEX_NODES: 6
+bob
+skip
+bob
+N_BLOCKS: 0
+N_ALLOCATED_BLOCKS: 0
+N_ALLOCATED_INDEX_NODES: 0
 Block allocation table:
-00: ff
-01: 00
-02: 00
-03: 00
-04: 00
-05: 00
-06: 00
-07: 00
 Relative Index Node 0	DIRECTORY	Nref=1	Content=2	size=3
 Relative Index Node 1	DIRECTORY	Nref=1	Content=3	size=4
-Relative Index Node 2	DIRECTORY	Nref=1	Content=4	size=2
-Relative Index Node 3	DIRECTORY	Nref=1	Content=5	size=4
-Relative Index Node 4	DIRECTORY	Nref=1	Content=6	size=2
-Relative Index Node 5	DIRECTORY	Nref=1	Content=7	size=2
 Next block: 65534
 Directory at block 2:
 Entry 0: name=".", index_node=0
@@ -158,52 +140,57 @@ Directory at block 3:
 Entry 0: name=".", index_node=1
 Entry 1: name="..", index_node=0
 Entry 2: name="skip", index_node=2
-Entry 3: name="bob", index_node=3
+Entry 3: name="bob", index_node=2
 Next block: 65534
 Directory at block 4:
-Entry 0: name=".", index_node=2
-Entry 1: name="..", index_node=1
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 5:
-Entry 0: name=".", index_node=3
-Entry 1: name="..", index_node=1
-Entry 2: name="mail", index_node=4
-Entry 3: name="thisfilenameiswaytoolongtowor", index_node=5
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 6:
-Entry 0: name=".", index_node=4
-Entry 1: name="..", index_node=3
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 7:
-Entry 0: name=".", index_node=5
-Entry 1: name="..", index_node=3
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 ../
 ./
 home/
 ../
 ./
-bob/
-skip/
-../
-./
-N_BLOCKS: 64
-N_ALLOCATED_BLOCKS: 7
-N_ALLOCATED_INDEX_NODES: 5
+bob
+skip
+N_BLOCKS: 0
+N_ALLOCATED_BLOCKS: -1
+N_ALLOCATED_INDEX_NODES: -1
 Block allocation table:
-00: ef
-01: 00
-02: 00
-03: 00
-04: 00
-05: 00
-06: 00
-07: 00
 Relative Index Node 0	DIRECTORY	Nref=1	Content=2	size=3
 Relative Index Node 1	DIRECTORY	Nref=1	Content=3	size=3
-Relative Index Node 3	DIRECTORY	Nref=1	Content=5	size=4
-Relative Index Node 4	DIRECTORY	Nref=1	Content=6	size=2
-Relative Index Node 5	DIRECTORY	Nref=1	Content=7	size=2
 Next block: 65534
 Directory at block 2:
 Entry 0: name=".", index_node=0
@@ -213,29 +200,38 @@ Next block: 65534
 Directory at block 3:
 Entry 0: name=".", index_node=1
 Entry 1: name="..", index_node=0
-Entry 3: name="bob", index_node=3
+Entry 3: name="bob", index_node=2
 Next block: 65534
 Directory at block 5:
-Entry 0: name=".", index_node=3
-Entry 1: name="..", index_node=1
-Entry 2: name="mail", index_node=4
-Entry 3: name="thisfilenameiswaytoolongtowor", index_node=5
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 6:
-Entry 0: name=".", index_node=4
-Entry 1: name="..", index_node=3
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 Directory at block 7:
-Entry 0: name=".", index_node=5
-Entry 1: name="..", index_node=3
+Entry 0: name="", index_node=0
+Entry 1: name="", index_node=0
+Entry 2: name="", index_node=0
+Entry 3: name="", index_node=0
+Entry 4: name="", index_node=0
+Entry 5: name="", index_node=0
+Entry 6: name="", index_node=0
 Next block: 65534
 ../
 ./
 home/
 ../
 ./
-bob/
-../
-./
-../
-./
+bob
