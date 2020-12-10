@@ -138,7 +138,6 @@ int myfs_list(char* cwd, char* path)
 {
     if (debug) {
         fprintf(stderr, "Listing directories with cwd = %s and path = %s.\n", cwd, path);
-        exit(-1);
     }
     INDEX_NODE_REFERENCE parent_Ref;
     INDEX_NODE_REFERENCE new_Ref;
