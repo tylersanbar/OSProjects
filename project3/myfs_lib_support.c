@@ -633,6 +633,10 @@ int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
                 //Set index node reference to UNALLOCATED_INDEX_NODE
                 dir_block.content.directory.entry[i].index_node_reference = UNALLOCATED_INDEX_NODE;
                 //Return success
+                if (vdisk_write_block(dir_ref, &dir_block) < 0) {
+                    fprintf(stderr, "Unable to write directory block\n");
+                    exit(-1);
+                }
                 return 0;
             }
         }
