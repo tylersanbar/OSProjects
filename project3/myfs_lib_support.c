@@ -544,14 +544,17 @@ int myfs_find_open_bit(unsigned char value)
         //If least significant bit is equal to 0, return index
         if ((value & 1) == 0) {
             if (debug) {
-                fprintf(stderr, "Open bit found: %d\n.", i);
+                fprintf(stderr, "Open bit found: %d.\n", i);
             }
             return i;
         }
         //Check next bit
-        value >> 1;
+        value = value >> 1;
     }
     //No zero bit found
+    if (debug) {
+        fprintf(stderr, "No open bit found.\n");
+    }
     return -1;
 }
 
