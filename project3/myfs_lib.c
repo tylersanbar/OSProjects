@@ -361,7 +361,7 @@ int myfs_rmd(char *cwd, char *path)
         return -1;
     }
     //If invalid name, error
-    if (strcmp(local_name, "/") | strcmp(local_name, ".") | strcmp(local_name, "..")) {
+    if (!(strcmp(local_name, "/") & strcmp(local_name, ".") & strcmp(local_name, ".."))) {
         fprintf(stderr, "Can not remove directory named %s\n", local_name);
         return -2;
     }
