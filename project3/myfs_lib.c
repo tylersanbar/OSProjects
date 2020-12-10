@@ -92,7 +92,7 @@ int myfs_format_disk(char* virtual_disk_name, int n_blocks)
     //Set directory block------------------------
     //Set Index Node and Directory Block
     INDEX_NODE dirNode;
-    myfs_init_directory_block_and_index_node(&dirNode, &block, ROOT_DIRECTORY_BLOCK, 0, 1);
+    myfs_init_directory_block_and_index_node(&dirNode, &block, ROOT_DIRECTORY_BLOCK, 0, 0);
     //Write Directory Block
     if (vdisk_write_block(ROOT_DIRECTORY_BLOCK, &block) != 0) {
         return (-1);
