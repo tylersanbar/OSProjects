@@ -24,12 +24,6 @@
     <ClCompile Include="myfs_create.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="myfs_lib_skel_p4.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib_support_skel_p4.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="myfs_link.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,6 +43,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vdisk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_lib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_lib_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_format.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_inspect.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_mkd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_rmd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="myfs_stats.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

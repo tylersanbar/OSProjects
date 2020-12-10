@@ -74,7 +74,5 @@ echo INSPECT
 ./myfs_inspect -index 0
 ./myfs_inspect -dir 2
 ./myfs_inspect -index 1
-./myfs_inspect -data 3
-./myfs_inspect -data 4
 ./myfs_inspect -index 2
 ./myfs_inspect -dir 9

@@ -148,9 +148,7 @@
     <ClCompile Include="myfs_format.c" />
     <ClCompile Include="myfs_inspect.c" />
     <ClCompile Include="myfs_lib.c" />
-    <ClCompile Include="myfs_lib_skel.c" />
     <ClCompile Include="myfs_lib_support.c" />
-    <ClCompile Include="myfs_lib_support_skel.c" />
     <ClCompile Include="myfs_list.c" />
     <ClCompile Include="myfs_mkd.c" />
     <ClCompile Include="myfs_rmd.c" />

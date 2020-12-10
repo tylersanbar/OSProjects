@@ -38,13 +38,7 @@
     <ClCompile Include="myfs_lib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="myfs_lib_skel.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="myfs_lib_support.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="myfs_lib_support_skel.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="myfs_list.c">

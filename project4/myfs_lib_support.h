@@ -14,6 +14,7 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *inode, BLOCK *block,
 				    INDEX_NODE_REFERENCE self_inode_reference,
 				    INDEX_NODE_REFERENCE parent_inode_reference);
 
+INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE* index_node, char* element_name);
 INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name,
 						   BLOCK *block, BLOCK_REFERENCE *ref, int *entry_index);
 int myfs_path_to_index_node(char *cwd, char * path, INDEX_NODE_REFERENCE *parent,

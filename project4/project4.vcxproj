@@ -142,13 +142,19 @@
     <ClCompile Include="myfs_append.c" />
     <ClCompile Include="myfs_copy.c" />
     <ClCompile Include="myfs_create.c" />
-    <ClCompile Include="myfs_lib_skel_p4.c" />
-    <ClCompile Include="myfs_lib_support_skel_p4.c" />
+    <ClCompile Include="myfs_format.c" />
+    <ClCompile Include="myfs_inspect.c" />
+    <ClCompile Include="myfs_lib.c" />
+    <ClCompile Include="myfs_lib_support.c" />
     <ClCompile Include="myfs_link.c" />
+    <ClCompile Include="myfs_list.c" />
+    <ClCompile Include="myfs_mkd.c" />
     <ClCompile Include="myfs_mkp.c" />
     <ClCompile Include="myfs_more.c" />
     <ClCompile Include="myfs_move.c" />
     <ClCompile Include="myfs_rm.c" />
+    <ClCompile Include="myfs_rmd.c" />
+    <ClCompile Include="myfs_stats.c" />
     <ClCompile Include="myfs_touch.c" />
     <ClCompile Include="vdisk.c" />
   </ItemGroup>
