@@ -31,7 +31,9 @@ int main(int argc, char** argv) {
 
   // Open the virtual disk
   vdisk_open(disk_name, 0);
-
+  if (debug) {
+      fprintf(stderr, "Calling myfs_list with %d arguments.", argc);
+  }
   // How list is called depends on the number of arguments
   if(argc == 1) {
     myfs_list(cwd, "");
