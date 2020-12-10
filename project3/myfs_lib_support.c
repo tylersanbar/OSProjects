@@ -681,6 +681,8 @@ int myfs_deallocate_blocks(BLOCK *volume_block, BLOCK_REFERENCE bref)
         }
         //Get next block
         nextBlock = block.next;
+        //Zero out block
+        memset(&block, 0, sizeof(block));
         //Set next block to unallocated
         block.next = UNALLOCATED_BLOCK;
         //Write block

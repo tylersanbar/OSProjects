@@ -372,8 +372,8 @@ int myfs_rmd(char *cwd, char *path)
         fprintf(stderr, "Directory not empty, can not remove.\n");
         return -2;
     }
-    //Deallocate block we are removing
-    if (myfs_deallocate_blocks(&volume, removeIndexRef) != 0) {
+    //Deallocate directory block we are removing
+    if (myfs_deallocate_blocks(&volume, removeIndexNode.content) != 0) {
         fprintf(stderr, "Unable to deallocate block for removal request.\n");
         return -1;
     }
