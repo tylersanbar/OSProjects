@@ -28,8 +28,8 @@ all:
 	gcc $(MORE).c $(LIB) -o $(MORE)
 	gcc $(CREATE).c $(LIB) -o $(CREATE)
 	gcc $(LINK).c $(LIB) -o $(LINK)
-	gcc $(MKP).c $(COPY) -o $(COPY)
-	gcc $(MKP).c $(MOVE) -o $(MOVE)
+	gcc $(COPY).c $(LIB) -o $(COPY)
+	gcc $(MOVE).c $(LIB) -o $(MOVE)
 	gcc $(MKP).c $(LIB) -o $(MKP)
 	gcc $(LC).c $(LIB) -o $(LC)
 clean:
