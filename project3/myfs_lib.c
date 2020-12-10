@@ -148,28 +148,26 @@ int myfs_list(char* cwd, char* path)
     if (strcmp(path, "") == 0) strcat(path, cwd);
     if (debug) {
         fprintf(stderr, "No path provided, using %s.", path);
-        return -1;
     }
     //Get index node references and local name
     int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
-    return(0);
-    //if (pathReturn != 0) {
-    //    if (pathReturn == -1) {
-    //        fprintf(stderr, "File or directory does not exist.\n");
-    //        return (-1);
-    //    }
-    //    fprintf(stderr, "Error finding path to file or directory.\n");
-    //    return(-3);
-    //}
-    //if (debug) {
-    //    fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
-    //}
-    ////Check if index node is a directory, if not, print name
-    //myfs_read_index_node_by_reference(new_Ref, &new);
-    //if (new.type != T_DIRECTORY) {
-    //    printf("%s\n", local_name);
-    //    return(0);
-    //}
+    if (pathReturn != 0) {
+        if (pathReturn == -1) {
+            fprintf(stderr, "File or directory does not exist.\n");
+            return (-1);
+        }
+        fprintf(stderr, "Error finding path to file or directory.\n");
+        return(-3);
+    }
+    if (debug) {
+        fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
+    }
+    //Check if index node is a directory, if not, print name
+    myfs_read_index_node_by_reference(new_Ref, &new);
+    if (new.type != T_DIRECTORY) {
+        printf("%s\n", local_name);
+        return(0);
+    }
     ////Add "/" to local name
     ////strcat(local_name,"/");
     ////Make array of strings with max number of directory entries
