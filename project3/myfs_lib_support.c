@@ -569,7 +569,7 @@ BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
     //Find unallocated block
     for (int i = 0; i < sizeof(volume_block->content.volume.block_allocation_table); i++) {
         //If byte has unallocated blocks
-        if (volume_block->content.volume.block_allocation_table[i] < sizeof(unsigned char)) {
+        if (volume_block->content.volume.block_allocation_table[i] < 0xFF) {
             //Find the open bit
             int openBit = myfs_find_open_bit(volume_block->content.volume.block_allocation_table[i]);
             //Set the free reference variable to (byte index * 8 + openBit)
