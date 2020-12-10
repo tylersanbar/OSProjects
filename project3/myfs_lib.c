@@ -173,7 +173,7 @@ int myfs_list(char* cwd, char* path)
     //Make array of strings with max number of directory entries
     char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
     //Add local name to contents
-    strncpy(contents[0], local_name,MAX_PATH_LENGTH);
+    //strncpy(contents[0], local_name,MAX_PATH_LENGTH);
     //Next concents index
     int numOfElements = 1;
     //Initialize directory block and reference
