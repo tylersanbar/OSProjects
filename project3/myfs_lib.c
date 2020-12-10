@@ -227,7 +227,7 @@ int myfs_mkd(char *cwd, char *path)
     INDEX_NODE_REFERENCE newIndexRef;
     INDEX_NODE parentIndexNode;
     INDEX_NODE newIndexNode;
-    char* local_name[MAX_PATH_LENGTH];
+    char local_name[MAX_PATH_LENGTH];
     BLOCK_REFERENCE lastRef;
     BLOCK lastBlock;
     int entryIndex;
