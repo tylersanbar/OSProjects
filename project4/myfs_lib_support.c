@@ -219,45 +219,49 @@ void myfs_clear_all_index_node_entries(BLOCK* index_node_block)
  *
  * @param index_node      (IN) Pointer to a loaded index_node structure.  Must be a directory index_node
  * @param element_name    (IN) Name of the directory element to look up
+ * @param block           (OUT) Directory block that contains the entity
+ * @param ref             (OUT) Index into the directory block for the entity
  *
  * @return = INDEX_NODE_REFERENCE for the sub-item if found; UNALLOCATED_INDEX_NODE if not found
  *
- *
+ * PROVIDED
  */
 
-INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE* index_node, char* element_name)
+INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE* index_node, char* element_name,
+	BLOCK* block, BLOCK_REFERENCE* ref,
+	int* entry_index)
 {
 	if (debug)
 		fprintf(stderr, "\tDEBUG: myfs_find_entity_in_directory: %s\n", element_name);
 
-	BLOCK_REFERENCE ref = index_node->content;
-
-	BLOCK block;
+	*ref = index_node->content;
 
 	// Loop over all directory blocks in the linked list
-	while (ref != UNALLOCATED_BLOCK) {
+	while (*ref != UNALLOCATED_BLOCK) {
 		if (debug)
-			fprintf(stderr, "\tDEBUG: myfs_find_entity_in_directory() check block: %d\n", ref);
+			fprintf(stderr, "\tDEBUG: myfs_find_entity_in_directory() check block: %d\n", *ref);
 
 		// Read the directory data block
-		if (vdisk_read_block(ref, &block) != 0) {
+		if (vdisk_read_block(*ref, block) != 0) {
 			return(UNALLOCATED_INDEX_NODE);
 		}
 
 		// Loop over all entries
-		for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; ++i) {
+		for (*entry_index = 0; *entry_index < N_DIRECTORY_ENTRIES_PER_BLOCK; ++ * entry_index) {
 			if (debug)
-				fprintf(stderr, "\tDEBUG: Check: %d %s with %s\n", i,
-					block.content.directory.entry[i].name, element_name);
-			if (strncmp(block.content.directory.entry[i].name, element_name, FILE_NAME_SIZE) == 0) {
+				fprintf(stderr, "\tDEBUG: Check: %d %s with %s\n", *entry_index,
+					block->content.directory.entry[*entry_index].name, element_name);
+			if (block->content.directory.entry[*entry_index].index_node_reference != UNALLOCATED_INDEX_NODE &&
+				strncmp(block->content.directory.entry[*entry_index].name, element_name, FILE_NAME_SIZE) == 0) {
 				// Match: we are done
 				if (debug)
-					fprintf(stderr, "\tDEBUG: Match: %d\n", block.content.directory.entry[i].index_node_reference);
-				return(block.content.directory.entry[i].index_node_reference);
+					fprintf(stderr, "\tDEBUG: Match: %d\n",
+						block->content.directory.entry[*entry_index].index_node_reference);
+				return(block->content.directory.entry[*entry_index].index_node_reference);
 			}
 		}
 		// Go to the next directory block
-		ref = block.next;
+		*ref = block->next;
 	}
 
 	// Did not find any matches
@@ -355,43 +359,6 @@ int myfs_append_new_block_to_existing_block(BLOCK* volume_block,
 	*block_ref = newRef;
 	//Return success
 	return 0;
-}
-
-/**
-   Scan through the index node blocks & try to find a hole
-
-   @param index_node_block (OUT) Last block of the linked list
-   @param index_block_ref  (OUT) Last block ref in the linked list
- */
-INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK* index_node_block,
-	BLOCK_REFERENCE* index_block_ref)
-{
-	BLOCK_REFERENCE bref = ROOT_INDEX_NODE_BLOCK;
-	INDEX_NODE_REFERENCE ret = 0;
-
-	while (bref != UNALLOCATED_BLOCK) {
-		*index_block_ref = bref;
-		// Load the block
-		if (vdisk_read_block(bref, index_node_block) < 0) {
-			// Fatal error
-			fprintf(stderr, "myfs_find_index_node_hole: Unable to read block %d\n", bref);
-			exit(-1);
-		}
-
-		// Scan the block for unused entries
-		for (int i = 0; i < N_INDEX_NODES_PER_BLOCK; ++i, ++ret) {
-			if (index_node_block->content.index_nodes.index_node[i].type == T_UNUSED) {
-				// Found one!
-				return(ret);
-			}
-		}
-
-		// Not found in this block. Go to the next one in the linked list
-		bref = index_node_block->next;
-	}
-
-	// Not found at all
-	return(UNALLOCATED_INDEX_NODE);
 }
 
 /**

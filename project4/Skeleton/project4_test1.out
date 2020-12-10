@@ -1,0 +1,38 @@
+../
+./
+foo
+N_BLOCKS: 128
+N_ALLOCATED_BLOCKS: 3
+N_ALLOCATED_INDEX_NODES: 2
+Block allocation table:
+00: 07
+01: 00
+02: 00
+03: 00
+04: 00
+05: 00
+06: 00
+07: 00
+08: 00
+09: 00
+10: 00
+11: 00
+12: 00
+13: 00
+14: 00
+15: 00
+Index node: 0
+Type: DIRECTORY
+Nreferences: 1
+Content block: 2
+Size: 3
+Directory at block 2:
+Entry 0: name=".", index_node=0
+Entry 1: name="..", index_node=0
+Entry 2: name="foo", index_node=1
+Next block: 65534
+Index node: 1
+Type: FILE
+Nreferences: 1
+Content block: 65534
+Size: 0
