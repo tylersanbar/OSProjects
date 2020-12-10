@@ -173,44 +173,44 @@ int myfs_list(char* cwd, char* path)
     //Add "/" to local name
     strcat(local_name,"/");
     //Make array of strings with max number of directory entries
-    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
+    char contents[MAX_ENTRIES_PER_DIRECTORY][MAX_PATH_LENGTH];
     //Add local name to contents
-    strncpy(contents[0], local_name,MAX_PATH_LENGTH);
+    strcpy(contents[0], local_name);
     //Next concents index
     int numOfElements = 1;
     //Initialize directory block and reference
     BLOCK directoryBlock;
     BLOCK_REFERENCE bRef = new.content;
 
-    ////Loop through linked list of directory blocks
-    //while (bRef != UNALLOCATED_BLOCK) {
-    //    //Read directory block from index node
-    //    if (vdisk_read_block(bRef, &directoryBlock) != 0) {
-    //        return(-1);
-    //    }
-    //    //Check each entry in directory
-    //    for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
-    //        //Get reference for index node
-    //        new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
-    //        //If entry contains a directory, add to list
-    //        if (new_Ref != UNALLOCATED_INDEX_NODE) {
-    //            //Get name of entry
-    //            strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
-    //            //Get entry index node to check if it is a directory
-    //            myfs_read_index_node_by_reference(new_Ref, &new);
-    //            //If it is, add "/"
-    //            if(new.type == T_DIRECTORY) strcat(local_name,"/");
-    //            //Add name to list of contents
-    //            strcpy(contents[numOfElements++],local_name);
-    //        }
-    //    }
-    //}
-    ////Sort list of names
-    //qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
-    ////Print the sorted list of names
-    //for (int i = 0; i < numOfElements; i++) {
-    //    printf("%s\n",contents[i]);
-    //}
+    //Loop through linked list of directory blocks
+    while (bRef != UNALLOCATED_BLOCK) {
+        //Read directory block from index node
+        if (vdisk_read_block(bRef, &directoryBlock) != 0) {
+            return(-1);
+        }
+        //Check each entry in directory
+        for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
+            //Get reference for index node
+            new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
+            //If entry contains a directory, add to list
+            if (new_Ref != UNALLOCATED_INDEX_NODE) {
+                //Get name of entry
+                strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
+                //Get entry index node to check if it is a directory
+                myfs_read_index_node_by_reference(new_Ref, &new);
+                //If it is, add "/"
+                if(new.type == T_DIRECTORY) strcat(local_name,"/");
+                //Add name to list of contents
+                strcpy(contents[numOfElements++],local_name);
+            }
+        }
+    }
+    //Sort list of names
+    qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
+    //Print the sorted list of names
+    for (int i = 0; i < numOfElements; i++) {
+        printf("%s\n",contents[i]);
+    }
     return(0);
 }
 
