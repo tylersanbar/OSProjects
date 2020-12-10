@@ -5,10 +5,10 @@
  *
  * Author: Andrew H. Fagg (CS 3113)
  *
-* 
+*
  */
 
-// Only evaluate these definitions once, even if included multiple times
+ // Only evaluate these definitions once, even if included multiple times
 #ifndef FILE_STRUCTS_H
 #define FILE_STRUCTS_H
 
@@ -27,7 +27,7 @@ File system layout onto disk blocks:
 
 Block 0: Volume block
 Block 1: First Index Node block
-Block 2: Root directory block 
+Block 2: Root directory block
   :
   :
 (all other blocks are either index node, directory or data blocks)
@@ -71,38 +71,38 @@ typedef unsigned short INDEX_NODE_REFERENCE;
 // Data block: storage for file contents (project 4!)
 typedef struct
 {
-  unsigned char data[DATA_BLOCK_SIZE];
+	unsigned char data[DATA_BLOCK_SIZE];
 } DATA_BLOCK;
 
 
 /**********************************************************************/
 // Index node types
-typedef enum {T_UNUSED=0, T_DIRECTORY, T_FILE, T_PIPE} INDEX_NODE_TYPE;
+typedef enum { T_UNUSED = 0, T_DIRECTORY, T_FILE, T_PIPE } INDEX_NODE_TYPE;
 
 // Single index node
 typedef struct
 {
-  // Type of INDEX_NODE
-  INDEX_NODE_TYPE type;
+	// Type of INDEX_NODE
+	INDEX_NODE_TYPE type;
 
-  // Number of directory references to this index node
-  unsigned char references;
+	// Number of directory references to this index node
+	unsigned char references;
 
-  // Contents.  UNALLOCATED_BLOCK means that this entry is not used
-  BLOCK_REFERENCE content;
+	// Contents.  UNALLOCATED_BLOCK means that this entry is not used
+	BLOCK_REFERENCE content;
 
-  // File: size in bytes; Directory: number of directory entries
-  //  (including . and ..)
-  unsigned int size;
+	// File: size in bytes; Directory: number of directory entries
+	//  (including . and ..)
+	unsigned int size;
 } INDEX_NODE;
 
 // Number of index nodes stored in each block
 #define N_INDEX_NODES_PER_BLOCK ((int)(DATA_BLOCK_SIZE/sizeof(INDEX_NODE)))
 
 // Block of index_nodes
-typedef struct 
+typedef struct
 {
-  INDEX_NODE index_node[N_INDEX_NODES_PER_BLOCK];
+	INDEX_NODE index_node[N_INDEX_NODES_PER_BLOCK];
 } INDEX_NODE_BLOCK;
 
 
@@ -110,27 +110,27 @@ typedef struct
 // Block 0: Volume block
 #define VOLUME_BLOCK_REFERENCE 0
 
-typedef struct 
+typedef struct
 {
-  int n_blocks;                     // Total number of blocks
-  int n_allocated_blocks;           // Allocated == used
-  int n_allocated_index_nodes;
-  // 8 blocks per byte: One block per bit: 1 = allocated, 0 = free
-  // Block 0 (zero) is byte 0, bit 0 
-  //       1        is byte 0, bit 1
-  //       8        is byte 1, bit 0
-  unsigned char block_allocation_table[(MAX_BLOCKS+7)>>3];
+	int n_blocks;                     // Total number of blocks
+	int n_allocated_blocks;           // Allocated == used
+	int n_allocated_index_nodes;
+	// 8 blocks per byte: One block per bit: 1 = allocated, 0 = free
+	// Block 0 (zero) is byte 0, bit 0 
+	//       1        is byte 0, bit 1
+	//       8        is byte 1, bit 0
+	unsigned char block_allocation_table[(MAX_BLOCKS + 7) >> 3];
 }VOLUME_BLOCK;
 
 /**********************************************************************/
 // Single directory element
 typedef struct
 {
-  // Name of file/directory
-  char name[FILE_NAME_SIZE];
+	// Name of file/directory
+	char name[FILE_NAME_SIZE];
 
-  // UNALLOCATED_INDEX_NODE if this directory entry is non-existent
-  INDEX_NODE_REFERENCE index_node_reference;
+	// UNALLOCATED_INDEX_NODE if this directory entry is non-existent
+	INDEX_NODE_REFERENCE index_node_reference;
 
 } DIRECTORY_ENTRY;
 
@@ -143,7 +143,7 @@ typedef struct
 // Directory block
 typedef struct directory_block_s
 {
-  DIRECTORY_ENTRY entry[N_DIRECTORY_ENTRIES_PER_BLOCK];
+	DIRECTORY_ENTRY entry[N_DIRECTORY_ENTRIES_PER_BLOCK];
 } DIRECTORY_BLOCK;
 
 /**********************************************************************/
@@ -153,14 +153,14 @@ typedef struct directory_block_s
 
 typedef struct
 {
-  // Next block in a linked list (if this block belongs to one)
-  BLOCK_REFERENCE next;
-  union {
-    DATA_BLOCK data;
-    VOLUME_BLOCK volume;
-    INDEX_NODE_BLOCK index_nodes;
-    DIRECTORY_BLOCK directory;
-  } content;
+	// Next block in a linked list (if this block belongs to one)
+	BLOCK_REFERENCE next;
+	union {
+		DATA_BLOCK data;
+		VOLUME_BLOCK volume;
+		INDEX_NODE_BLOCK index_nodes;
+		DIRECTORY_BLOCK directory;
+	} content;
 } BLOCK;
 
 
@@ -171,14 +171,14 @@ typedef struct
 
 typedef struct
 {
-  INDEX_NODE_REFERENCE index_node_reference;
-  char mode;
-  int offset;
-  int fd_external;
+	INDEX_NODE_REFERENCE index_node_reference;
+	char mode;
+	int offset;
+	int fd_external;
 
-  // Cache for file content details.  Use of these is optional
-  int n_data_blocks;
-  BLOCK_REFERENCE block_reference_cache[MAX_BLOCKS_IN_FILE];
+	// Cache for file content details.  Use of these is optional
+	int n_data_blocks;
+	BLOCK_REFERENCE block_reference_cache[MAX_BLOCKS_IN_FILE];
 } MYFILE;
 
 

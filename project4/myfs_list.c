@@ -23,26 +23,28 @@ none are specified
 #include "vdisk.h"
 
 int main(int argc, char** argv) {
-  // Fetch the key environment vars
-  char cwd[MAX_PATH_LENGTH];
-  char disk_name[MAX_PATH_LENGTH];
+	// Fetch the key environment vars
+	char cwd[MAX_PATH_LENGTH];
+	char disk_name[MAX_PATH_LENGTH];
 
-  myfs_get_environment(cwd, disk_name);
+	myfs_get_environment(cwd, disk_name);
 
-  // Open the virtual disk
-  vdisk_open(disk_name, 0);
-  if (debug) {
-      fprintf(stderr, "Calling myfs_list with %d arguments.\n", argc);
-  }
-  // How list is called depends on the number of arguments
-  if(argc == 1) {
-    myfs_list(cwd, "");
-  }else if(argc == 2){
-    myfs_list(cwd, argv[1]);
-  }else{
-    fprintf(stderr, "Usage: myfs_list [<name>]\n");
-  }
+	// Open the virtual disk
+	vdisk_open(disk_name, 0);
+	if (debug) {
+		fprintf(stderr, "Calling myfs_list with %d arguments.\n", argc);
+	}
+	// How list is called depends on the number of arguments
+	if (argc == 1) {
+		myfs_list(cwd, "");
+	}
+	else if (argc == 2) {
+		myfs_list(cwd, argv[1]);
+	}
+	else {
+		fprintf(stderr, "Usage: myfs_list [<name>]\n");
+	}
 
-  // Clean up
-  vdisk_close();
+	// Clean up
+	vdisk_close();
 }

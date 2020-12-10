@@ -28,9 +28,9 @@ typedef unsigned short BLOCK_REFERENCE;
 #define MAX_BLOCKS 1920
 
 
-int vdisk_open(char *virtual_disk_name, int truncate_flag);
+int vdisk_open(char* virtual_disk_name, int truncate_flag);
 int vdisk_close();
-int vdisk_read_block(BLOCK_REFERENCE block_ref, void *block);
-int vdisk_write_block(BLOCK_REFERENCE block_ref, void *block);
+int vdisk_read_block(BLOCK_REFERENCE block_ref, void* block);
+int vdisk_write_block(BLOCK_REFERENCE block_ref, void* block);
 
 #endif
