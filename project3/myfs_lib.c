@@ -4,7 +4,7 @@
 #include "string.h"
 
 // Yes ... a global variable
-int debug = 1;
+int debug = 0;
 
 /**
  Read the MYFS_PWD, MYFS_DISK environment
@@ -150,7 +150,7 @@ int myfs_list(char* cwd, char* path)
     int pathReturn = myfs_path_to_index_node(cwd, newPath, &parent_Ref, &new_Ref, local_name);
     if (pathReturn != 0) {
         if (pathReturn == -1) {
-            fprintf(stderr, "File or directory does not exist.\n");
+            fprintf(stderr, "Not Found\n");
             return (-1);
         }
         fprintf(stderr, "Error finding path to file or directory.\n");
@@ -188,7 +188,6 @@ int myfs_list(char* cwd, char* path)
         bRef = directoryBlock.next;
         //Check each entry in directory
         for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
-            printf("Checking entry %d.\n", i);
             //Get reference for index node
             new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
             //If entry is valid, add to list
@@ -399,7 +398,7 @@ int myfs_rmd(char *cwd, char *path)
     myfs_read_index_node_by_reference(removeIndexRef, &removeIndexNode);
     //If not empty, error
     if (removeIndexNode.size > 2) {
-        fprintf(stderr, "Directory not empty, can not remove.\n");
+        fprintf(stderr, "Directory not empty\n");
         return -2;
     }
     //Deallocate directory block we are removing
