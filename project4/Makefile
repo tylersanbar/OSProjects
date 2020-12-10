@@ -5,14 +5,16 @@ LIST = myfs_list
 MKD = myfs_mkd
 RMD = myfs_rmd
 STATS = myfs_stats
-FOPEN = myfs_fopen
-FCLOSE = myfs_fclose
-FWRITE = myfs_fwrite
-FREAD = myfs_fread
-DELETE = myfs_delete_file
-MOVE = myfs_move
+TOUCH = myfs_touch
+RM = myfs_rm
+APPEND = myfs_append
+MORE = myfs_more
+CREATE = myfs_create
 LINK = myfs_link
+COPY = myfs_copy
+MOVE = myfs_move
 MKP = myfs_mkp
+LC = myfs_lc
 all:
 	gcc $(FORMAT).c $(LIB) -o $(FORMAT)
 	gcc $(INSPECT).c $(LIB) -o $(INSPECT)
@@ -20,13 +22,16 @@ all:
 	gcc $(MKD).c $(LIB) -o $(MKD)
 	gcc $(RMD).c $(LIB) -o $(RMD)
 	gcc $(STATS).c $(LIB) -o $(STATS)
-	gcc $(FOPEN).c $(LIB) -o $(FOPEN)
-	gcc $(FCLOSE).c $(LIB) -o $(FCLOSE)
-	gcc $(FWRITE).c $(LIB) -o $(FWRITE)
-	gcc $(FREAD).c $(LIB) -o $(FREAD)
-	gcc $(DELETE).c $(LIB) -o $(MOVE)
+	gcc $(TOUCH).c $(LIB) -o $(TOUCH)
+	gcc $(RM).c $(LIB) -o $(RM)
+	gcc $(APPEND).c $(LIB) -o $(APPEND)
+	gcc $(MORE).c $(LIB) -o $(MORE)
+	gcc $(CREATE).c $(LIB) -o $(CREATE)
 	gcc $(LINK).c $(LIB) -o $(LINK)
+	gcc $(MKP).c $(COPY) -o $(COPY)
+	gcc $(MKP).c $(MOVE) -o $(MOVE)
 	gcc $(MKP).c $(LIB) -o $(MKP)
+	gcc $(LC).c $(LIB) -o $(LC)
 clean:
 	rm $(FORMAT)
 	rm $(INSPECT)
@@ -34,13 +39,16 @@ clean:
 	rm $(MKD)
 	rm $(RMD)
 	rm $(STATS)
-	rm $(FOPEN)
-	rm $(FCLOSE)
-	rm $(FWRITE)
-	rm $(FREAD)
-	rm $(DELETE)
+	rm $(TOUCH)
+	rm $(RM)
+	rm $(APPEND)
+	rm $(MORE)
+	rm $(CREATE)
 	rm $(LINK)
+	rm $(COPY)
+	rm $(MOVE)
 	rm $(MKP)
+	rm $(LC)
 	rm project4.zip
 zip:
 	zip project4.zip *.c *.h Makefile README.txt
