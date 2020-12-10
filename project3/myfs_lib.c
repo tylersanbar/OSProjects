@@ -197,7 +197,7 @@ int myfs_list(char* cwd, char* path)
             //If entry is valid, add to list
             if (new_Ref != UNALLOCATED_INDEX_NODE) {
                 if (debug) {
-                    fprintf("Found entry at %d.\n", new_Ref);
+                    fprintf(stderr,"Found entry at %d.\n", (int)new_Ref);
                 }
                 //Get name of entry
                 strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
