@@ -187,6 +187,8 @@ int myfs_list(char* cwd, char* path)
         if (vdisk_read_block(bRef, &directoryBlock) != 0) {
             return(-1);
         }
+        //Next block we will check
+        bRef = directoryBlock.next;
         //Check each entry in directory
         for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
             //Get reference for index node
@@ -201,8 +203,14 @@ int myfs_list(char* cwd, char* path)
                 if(new.type == T_DIRECTORY) strcat(local_name,"/");
                 //Add name to list of contents
                 strcpy(contents[numOfElements++],local_name);
+                //If we've found all the entires, exit loop
+                if (numOfElements == new.size) {
+                    bRef = UNALLOCATED_BLOCK;
+                    continue;
+                }
             }
         }
+        
     }
     //Sort list of names
     qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
