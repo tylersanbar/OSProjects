@@ -136,12 +136,18 @@ int myfs_format_disk(char* virtual_disk_name, int n_blocks)
 
 int myfs_list(char* cwd, char* path)
 {
+    if (debug) {
+        fprintf(stderr, "Listing directories with cwd = %s and path = %s.\n", cwd, path);
+    }
     INDEX_NODE_REFERENCE parent_Ref;
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
     char local_name[MAX_PATH_LENGTH];
     //If no arguments provided for List, prepend cwd to path
     if (strcmp(path, "") == 0) strcat(path, cwd);
+    if (debug) {
+        fprintf(stderr, "No path provided, using %s.", path);
+    }
     //Get index node references and local name
     int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
     if (pathReturn != 0) {
@@ -151,6 +157,9 @@ int myfs_list(char* cwd, char* path)
         }
         fprintf(stderr, "Error finding path to file or directory.\n");
         return(-3);
+    }
+    if (debug) {
+        fprintf(stderr,"Entry found at index node %d, with name %s.\n", (int)new_Ref, local_name);
     }
     //Check if index node is a directory, if not, print name
     myfs_read_index_node_by_reference(new_Ref, &new);
