@@ -168,17 +168,17 @@ int myfs_list(char* cwd, char* path)
         printf("%s\n", local_name);
         return(0);
     }
-    ////Add "/" to local name
-    ////strcat(local_name,"/");
-    ////Make array of strings with max number of directory entries
-    //char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
-    ////Add local name to contents
-    //strcpy(contents[0], local_name);
-    ////Next concents index
-    //int numOfElements = 1;
-    ////Initialize directory block and reference
-    //BLOCK directoryBlock;
-    //BLOCK_REFERENCE bRef = new.content;
+    //Add "/" to local name
+    //strcat(local_name,"/");
+    //Make array of strings with max number of directory entries
+    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
+    //Add local name to contents
+    strncpy(contents[0], local_name,MAX_PATH_LENGTH);
+    //Next concents index
+    int numOfElements = 1;
+    //Initialize directory block and reference
+    BLOCK directoryBlock;
+    BLOCK_REFERENCE bRef = new.content;
 
     ////Loop through linked list of directory blocks
     //while (bRef != UNALLOCATED_BLOCK) {
