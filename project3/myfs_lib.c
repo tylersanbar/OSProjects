@@ -308,11 +308,16 @@ int myfs_mkd(char *cwd, char *path)
     }
     //Initialize new directory block and new index node
     myfs_init_directory_block_and_index_node(&newIndexNode, &newDirBlock, newDirRef, newIndexRef, parentIndexRef);
+    //Write new directory block to disk
+    if (vdisk_write_block(newDirRef, &newDirBlock) != 0) {
+        fprintf(stderr, "Unable to write new directory block.\n");
+        return (-5);
+    }
     //Write new index node to disk
     myfs_write_index_node_by_reference(newIndexRef, &newIndexNode);
     //Write volume block back to disk
     if (vdisk_write_block(VOLUME_BLOCK_REFERENCE, &volume) != 0) {
-        fprintf(stderr, "Unable to write volume block");
+        fprintf(stderr, "Unable to write volume block.\n");
         return (-5);
     }
 }

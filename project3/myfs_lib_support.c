@@ -188,7 +188,7 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *index_node, BLOCK *blo
 void myfs_clear_all_directory_entries(BLOCK *directory_block)
 {
     for (int i = 0; i < N_DIRECTORY_ENTRIES_PER_BLOCK; i++) {
-        directory_block->content.directory.entry[i].name == "";
+        directory_block->content.directory.entry[i].name[0] = 0;
         directory_block->content.directory.entry[i].index_node_reference = UNALLOCATED_INDEX_NODE;
     }
     
@@ -537,7 +537,7 @@ INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK* index_node_block,
 int myfs_find_open_bit(unsigned char value)
 {
     if (debug) {
-        fprintf(stderr, "Finding open bit of %d\n.", value);
+        fprintf(stderr, "Finding open bit of %d.\n", value);
     }
     for (int i = 0; i < 8; i++) {
 
