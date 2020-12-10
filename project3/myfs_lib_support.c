@@ -171,10 +171,10 @@ void myfs_init_directory_block_and_index_node(INDEX_NODE *index_node, BLOCK *blo
     myfs_clear_all_directory_entries(block);
     //Add self entry "."
     block->content.directory.entry[0].index_node_reference = self_index_node_reference;
-    *block->content.directory.entry[0].name = ".";
+    strncpy(block->content.directory.entry[0].name, ".", FILE_NAME_SIZE);
     //Add parent entry ".."
     block->content.directory.entry[1].index_node_reference = parent_index_node_reference;
-    *block->content.directory.entry[1].name = "..";
+    strncpy(block->content.directory.entry[1].name, "..", FILE_NAME_SIZE);
 }
 
 /**
@@ -225,7 +225,7 @@ void myfs_clear_all_index_node_entries(BLOCK *index_node_block)
  * 
  */
 
-int myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name)
+INDEX_NODE_REFERENCE myfs_find_entity_in_directory(INDEX_NODE *index_node, char *element_name)
 {
   if(debug)
     fprintf(stderr,"\tDEBUG: myfs_find_entity_in_directory: %s\n", element_name);
@@ -476,9 +476,9 @@ int myfs_append_new_block_to_existing_block(BLOCK *volume_block,
     //Set existing block's next to appended block reference
     block->next = newRef;
     //Write changes to existing block to disk
-    if (vdisk_write_block(block_ref, block) < 0) {
+    if (vdisk_write_block(*block_ref, block) < 0) {
         // Fatal error
-        fprintf(stderr, "myfs_append_new_block_to_existing_block: Unable to write block %d\n", block_ref);
+        fprintf(stderr, "myfs_append_new_block_to_existing_block: Unable to write block %d\n", (int)*block_ref);
         exit(-1);
     }
     //Rereference input to new block
@@ -611,7 +611,7 @@ int myfs_remove_directory_entry(BLOCK_REFERENCE dir_ref, char *name)
             //If if the entry matches
             if (strcmp(dir_block.content.directory.entry[i].name, name) == 0) {
                 //Set the name to the empty string
-                *dir_block.content.directory.entry[i].name = "";
+                strncpy(dir_block.content.directory.entry[i].name, "", FILE_NAME_SIZE);
                 //Set index node reference to UNALLOCATED_INDEX_NODE
                 dir_block.content.directory.entry[i].index_node_reference = UNALLOCATED_INDEX_NODE;
                 //Return success

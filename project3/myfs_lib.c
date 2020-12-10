@@ -140,7 +140,7 @@ int myfs_list(char* cwd, char* path)
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
     char local_name[FILE_NAME_SIZE];
-    if (myfs_path_to_index_node(cwd, path, parent_Ref, new_Ref, local_name) != 0) {
+    if (myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name) != 0) {
         return(-3);
     }
     //Check if index node is a directory, if not, print name
@@ -172,7 +172,7 @@ int myfs_list(char* cwd, char* path)
             //Get reference for index node
             new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
             //If entry contains a directory, add to list
-            if (&new_Ref != UNALLOCATED_INDEX_NODE) {
+            if (new_Ref != UNALLOCATED_INDEX_NODE) {
                 //Get name of entry
                 strncpy(local_name, directoryBlock.content.directory.entry[i].name, FILE_NAME_SIZE);
                 //Get entry index node to check if it is a directory
@@ -185,11 +185,19 @@ int myfs_list(char* cwd, char* path)
         }
     }
     //Sort list of names
-    qsort(contents,numOfElements,FILE_NAME_SIZE, strcmp);
+    qsort(contents,numOfElements,FILE_NAME_SIZE, cmpstr);
     //Print the sorted list of names
     for (int i = 0; i < numOfElements; i++) {
         printf("%s\n",contents[i]);
     }
+}
+
+//Provided function wrapper for cmpstr found on webpage
+//https://www.benjaminwuethrich.dev/2015-03-07-sorting-strings-in-c-with-qsort.html
+int cmpstr(const void* a, const void* b) {
+    const char* aa = (const char*)a;
+    const char* bb = (const char*)b;
+    return strcmp(aa, bb);
 }
 
 
