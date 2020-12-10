@@ -383,7 +383,10 @@ int myfs_rmd(char *cwd, char *path)
         return (-4);
     }
     //Get index nodes for parent and directory to remove
-    myfs_path_to_index_node(cwd, path, &parentIndexRef, &removeIndexRef, local_name);
+    if (myfs_path_to_index_node(cwd, path, &parentIndexRef, &removeIndexRef, local_name) == -1) {
+        fprintf(stderr, "Directory does not exist.\n");
+        return (-1);
+    }
     //If it doesn't exist, error
     if (removeIndexRef == UNALLOCATED_BLOCK) {
         fprintf(stderr, "Directory does not exist.\n");
