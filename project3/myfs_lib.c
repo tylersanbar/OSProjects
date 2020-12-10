@@ -90,8 +90,6 @@ int myfs_format_disk(char* virtual_disk_name, int n_blocks)
         return (-1);
     }
     //Set directory block------------------------
-    //Clear out directory block
-    myfs_clear_all_directory_entries(&block);
     //Set Index Node and Directory Block
     INDEX_NODE dirNode;
     myfs_init_directory_block_and_index_node(&dirNode, &block, ROOT_DIRECTORY_BLOCK, 0, 1);
@@ -187,13 +185,16 @@ int myfs_list(char* cwd, char* path)
         if (vdisk_read_block(bRef, &directoryBlock) != 0) {
             return(-1);
         }
+        if (debug) {
+            fprintf(stderr, "Searching directory at index reference %d for entries.\n", (int)bRef);
+        }
         //Next block we will check
         bRef = directoryBlock.next;
         //Check each entry in directory
         for (int i = 0; i < MAX_ENTRIES_PER_DIRECTORY; i++) {
             //Get reference for index node
             new_Ref = directoryBlock.content.directory.entry[i].index_node_reference;
-            //If entry contains a directory, add to list
+            //If entry is valid, add to list
             if (new_Ref != UNALLOCATED_INDEX_NODE) {
                 //Get name of entry
                 strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
