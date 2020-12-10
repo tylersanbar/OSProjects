@@ -536,9 +536,18 @@ INDEX_NODE_REFERENCE myfs_find_index_node_hole(BLOCK* index_node_block,
 
 int myfs_find_open_bit(unsigned char value)
 {
+    if (debug) {
+        fprintf(stderr, "Finding open bit of %d\n.", value);
+    }
     for (int i = 0; i < 8; i++) {
+
         //If least significant bit is equal to 0, return index
-        if ((value & 1) == 0) return i;
+        if ((value & 1) == 0) {
+            if (debug) {
+                fprintf(stderr, "Open bit found: %d\n.", i);
+            }
+            return i;
+        }
         //Check next bit
         value >> 1;
     }
