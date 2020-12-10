@@ -210,6 +210,7 @@ int myfs_list(char* cwd, char* path)
     for (int i = 0; i < numOfElements; i++) {
         printf("%s\n",contents[i]);
     }
+    return(0);
 }
 
 //Provided function wrapper for cmpstr found on webpage
