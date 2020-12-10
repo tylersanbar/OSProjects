@@ -140,7 +140,16 @@ int myfs_list(char* cwd, char* path)
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
     char local_name[MAX_PATH_LENGTH];
-    if (myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name) != 0) {
+    //If no arguments provided for List, prepend cwd to path
+    if (strcmp(path, "") == 0) strcat(path, cwd);
+    //Get index node references and local name
+    int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
+    if (pathReturn != 0) {
+        if (pathReturn == -1) {
+            fprintf(stderr, "File or directory does not exist.\n");
+            return (-1);
+        }
+        fprintf(stderr, "Error finding path to file or directory.\n");
         return(-3);
     }
     //Check if index node is a directory, if not, print name
