@@ -12,7 +12,6 @@ all:
 	gcc $(MKD).c $(LIB) -o $(MKD)
 	gcc $(RMD).c $(LIB) -o $(RMD)
 	gcc $(STATS).c $(LIB) -o $(STATS)
-	zip project3.zip *.c *.h Makefile README.txt
 clean:
 	rm $(FORMAT)
 	rm $(INSPECT)
@@ -21,3 +20,5 @@ clean:
 	rm $(RMD)
 	rm $(STATS)
 	rm project3.zip
+zip:
+	zip project3.zip *.c *.h Makefile README.txt
