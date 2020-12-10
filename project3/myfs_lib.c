@@ -143,12 +143,13 @@ int myfs_list(char* cwd, char* path)
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
     char local_name[MAX_PATH_LENGTH];
-    //If no arguments provided for List, prepend cwd to path
-    if (strcmp(path, "") == 0) strcat(path, cwd);
     if (debug) {
         fprintf(stderr, "No path provided, using %s.\n", path);
         exit(-1);
     }
+    //If no arguments provided for List, prepend cwd to path
+    if (strcmp(path, "") == 0) strcat(path, cwd);
+
     //Get index node references and local name
     int pathReturn = myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name);
     if (pathReturn != 0) {
