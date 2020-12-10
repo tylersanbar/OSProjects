@@ -560,6 +560,9 @@ int myfs_find_open_bit(unsigned char value)
  */
 BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
 {
+    if (debug) {
+        fprintf(stderr, "Allocating new block.\n");
+    }
     BLOCK_REFERENCE free_ref;
     //If volume block is full, return UNALLOCATED_BLOCK
     if (volume_block->content.volume.n_allocated_blocks >= volume_block->content.volume.n_blocks) {
@@ -579,6 +582,9 @@ BLOCK_REFERENCE myfs_allocate_new_block(BLOCK *volume_block)
             //Increment number of allocated blocks
             volume_block->content.volume.n_allocated_blocks++;
             //Return block reference
+            if (debug) {
+                fprintf(stderr, "Allocation success, Block reference is %d.\n", (int)free_ref);
+            }
             return free_ref;
         }
     }

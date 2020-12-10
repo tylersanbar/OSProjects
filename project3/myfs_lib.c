@@ -139,7 +139,7 @@ int myfs_list(char* cwd, char* path)
     INDEX_NODE_REFERENCE parent_Ref;
     INDEX_NODE_REFERENCE new_Ref;
     INDEX_NODE new;
-    char local_name[FILE_NAME_SIZE];
+    char local_name[MAX_PATH_LENGTH];
     if (myfs_path_to_index_node(cwd, path, &parent_Ref, &new_Ref, local_name) != 0) {
         return(-3);
     }
@@ -152,7 +152,7 @@ int myfs_list(char* cwd, char* path)
     //Add "/" to local name
     //strcat(local_name,"/");
     //Make array of strings with max number of directory entries
-    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][FILE_NAME_SIZE];
+    char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
     //Add local name to contents
     strcpy(contents[0], local_name);
     //Next concents index
@@ -174,7 +174,7 @@ int myfs_list(char* cwd, char* path)
             //If entry contains a directory, add to list
             if (new_Ref != UNALLOCATED_INDEX_NODE) {
                 //Get name of entry
-                strncpy(local_name, directoryBlock.content.directory.entry[i].name, FILE_NAME_SIZE);
+                strncpy(local_name, directoryBlock.content.directory.entry[i].name, MAX_PATH_LENGTH);
                 //Get entry index node to check if it is a directory
                 myfs_read_index_node_by_reference(new_Ref, &new);
                 //If it is, add "/"
@@ -185,7 +185,7 @@ int myfs_list(char* cwd, char* path)
         }
     }
     //Sort list of names
-    qsort(contents,numOfElements,FILE_NAME_SIZE, cmpstr);
+    qsort( contents, numOfElements, MAX_PATH_LENGTH, cmpstr);
     //Print the sorted list of names
     for (int i = 0; i < numOfElements; i++) {
         printf("%s\n",contents[i]);
