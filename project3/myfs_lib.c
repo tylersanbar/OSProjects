@@ -171,7 +171,7 @@ int myfs_list(char* cwd, char* path)
         return(0);
     }
     //Add "/" to local name
-    //strcat(local_name,"/");
+    strcat(local_name,"/");
     //Make array of strings with max number of directory entries
     //char contents[MAX_ENTRIES_PER_DIRECTORY*(MAX_BLOCKS-2)][MAX_PATH_LENGTH];
     //Add local name to contents
