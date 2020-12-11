@@ -620,7 +620,7 @@ MYFILE* myfs_fopen(char* cwd, char* path, char* mode)
 		fp->offset = -1;
 		//Open underlying Linux file with mode flag and assign external file descriptor
 		fp->fd_external = open(local_name, fp->mode);
-		if ((int)fp->fd_external == NULL) {
+		if (&(fp->fd_external) == NULL) {
 			fprintf(stderr, "Error opening linux file:%s.\n",local_name);
 			return (NULL);
 		}
