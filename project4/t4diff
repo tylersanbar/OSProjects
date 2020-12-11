@@ -2,18 +2,14 @@
 < N_ALLOCATED_BLOCKS: 9
 < N_ALLOCATED_INDEX_NODES: 3
 ---
-> N_ALLOCATED_BLOCKS: 3
+> N_ALLOCATED_BLOCKS: 4
 > N_ALLOCATED_INDEX_NODES: 2
 6,7c6,7
 < 00: ff
 < 01: 01
 ---
-> 00: 07
+> 00: 0f
 > 01: 00
-26c26
-< Size: 4
----
-> Size: 3
 31d30
 < Entry 3: name="test2.sh", index_node=2
 36,549c35
@@ -627,7 +623,7 @@
 < Nreferences: 1
 < Content block: 3
 < Size: 1029
-645,1170c38,50
+645,903c38,42
 <   0: 23 #
 <   1: 21 !
 <   2: 2f /
@@ -887,7 +883,13 @@
 <   2: 20  
 <   3: 31 1
 <   4: 0a
-<   5: 2e .
+---
+>   0: 66 f
+>   1: 69 i
+>   2: 6c l
+>   3: 65 e
+>   4: 32 2
+905,1170c44,50
 <   6: 2f /
 <   7: 6d m
 <   8: 79 y
@@ -1155,15 +1157,9 @@
 <  11: 78 x
 <  12: 74 t
 ---
->   0: 00
->   1: 00
->   2: 00
->   3: 00
->   4: 00
->   5: 00
->   6: 00
->   7: 00
->   8: 00
+>   6: 74 t
+>   7: 78 x
+>   8: 74 t
 >   9: 00
 >  10: 00
 >  11: 00
@@ -1858,22 +1854,22 @@
 >  10: 00
 >  11: 00
 >  12: 00
-2326,2327c545,2161
+2326c545
 < Index node: 3
-< Type: PIPE
 ---
 > Index node: 2
-> Type: UNUSED
-> Nreferences: 0
-> Content block: 65534
+2329c548,2163
+< Content block: 9
+---
+> Content block: 3
 > Size: 0
 > COPY
 > INSPECT
 > N_BLOCKS: 128
-> N_ALLOCATED_BLOCKS: 3
+> N_ALLOCATED_BLOCKS: 4
 > N_ALLOCATED_INDEX_NODES: 3
 > Block allocation table:
-> 00: 07
+> 00: 0f
 > 01: 00
 > 02: 00
 > 03: 00
@@ -1893,12 +1889,12 @@
 > Type: DIRECTORY
 > Nreferences: 1
 > Content block: 2
-> Size: 4
+> Size: 5
 > Directory at block 2:
 > Entry 0: name=".", index_node=0
 > Entry 1: name="..", index_node=0
 > Entry 2: name="test1.sh", index_node=1
-> Entry 3: name="test2.sh", index_node=2
+> Entry 3: name="test2.sh", index_node=3
 > Next block: 65534
 > Index node: 1
 > Type: FILE
@@ -1906,15 +1902,15 @@
 > Content block: 65534
 > Size: 0
 > Raw data at block 3:
->   0: 00
->   1: 00
->   2: 00
->   3: 00
->   4: 00
->   5: 00
->   6: 00
->   7: 00
->   8: 00
+>   0: 66 f
+>   1: 69 i
+>   2: 6c l
+>   3: 65 e
+>   4: 32 2
+>   5: 2e .
+>   6: 74 t
+>   7: 78 x
+>   8: 74 t
 >   9: 00
 >  10: 00
 >  11: 00
@@ -2414,9 +2410,9 @@
 > 251: 00
 > Next block: 65534
 > Index node: 2
-> Type: FILE
+> Type: PIPE
 > Nreferences: 1
-> Content block: 65534
+> Content block: 3
 > Size: 0
 > Raw data at block 8:
 >   0: 00
@@ -2674,10 +2670,10 @@
 > Next block: 65534
 > INSPECT
 > N_BLOCKS: 128
-> N_ALLOCATED_BLOCKS: 3
+> N_ALLOCATED_BLOCKS: 4
 > N_ALLOCATED_INDEX_NODES: 4
 > Block allocation table:
-> 00: 07
+> 00: 0f
 > 01: 00
 > 02: 00
 > 03: 00
@@ -2697,13 +2693,13 @@
 > Type: DIRECTORY
 > Nreferences: 1
 > Content block: 2
-> Size: 5
+> Size: 6
 > Directory at block 2:
 > Entry 0: name=".", index_node=0
 > Entry 1: name="..", index_node=0
 > Entry 2: name="test1.sh", index_node=1
-> Entry 3: name="test2.sh", index_node=2
-> Entry 4: name="test3.sh", index_node=3
+> Entry 3: name="test2.sh", index_node=3
+> Entry 4: name="test3.sh", index_node=4
 > Next block: 65534
 > Index node: 1
 > Type: FILE
@@ -2711,15 +2707,15 @@
 > Content block: 65534
 > Size: 0
 > Raw data at block 3:
->   0: 00
->   1: 00
->   2: 00
->   3: 00
->   4: 00
->   5: 00
->   6: 00
->   7: 00
->   8: 00
+>   0: 66 f
+>   1: 69 i
+>   2: 6c l
+>   3: 65 e
+>   4: 32 2
+>   5: 2e .
+>   6: 74 t
+>   7: 78 x
+>   8: 74 t
 >   9: 00
 >  10: 00
 >  11: 00
@@ -3219,9 +3215,9 @@
 > 251: 00
 > Next block: 65534
 > Index node: 2
-> Type: FILE
+> Type: PIPE
 > Nreferences: 1
-> Content block: 65534
+> Content block: 3
 > Size: 0
 > Raw data at block 8:
 >   0: 00
@@ -3479,9 +3475,7 @@
 > Next block: 65534
 > Index node: 3
 > Type: FILE
-2329c2163
-< Content block: 9
----
+> Nreferences: 1
 > Content block: 65534
 2332,2344c2166,2178
 <   0: 75 u
