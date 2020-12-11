@@ -1156,7 +1156,7 @@ int myfs_move(char* cwd, char* path_src, char* path_dst)
 	//Case 1: SRC and DEST parents are the same-------------------
 	if (parent_src == parent_dst) {
 		//Change name of entry to destination name
-		strcpy(parent_src_block.content.directory.entry[child_dst_index].name, local_name_dst);
+		strcpy(parent_src_block.content.directory.entry[child_src_index].name, local_name_dst);
 		vdisk_write_block(index_node_dst.content, &parent_src_block);
 	}
 	//Case 2:Different Parents-----------------------------------
