@@ -1176,11 +1176,11 @@ int myfs_mkp(char* cwd, char* path_host, char* path_myfs)
 	BLOCK index_node_block;
 	BLOCK_REFERENCE inode_block_ref;
 	//Find index node reference for child
-	child = myfs_find_index_node_hole(&index_node_block, inode_block_ref);
+	child = myfs_find_index_node_hole(&index_node_block, &inode_block_ref);
 	//If unable to find an index node
 	if (child == UNALLOCATED_INDEX_NODE) {
 		//Allocate new index node block
-		if (myfs_append_new_block_to_existing_block(&volume, &index_node_block, inode_block_ref) != 0) {
+		if (myfs_append_new_block_to_existing_block(&volume, &index_node_block, &inode_block_ref) != 0) {
 			if (debug)
 				fprintf(stderr, "Unable to expand index node block.\n");
 			return(-8);
@@ -1188,20 +1188,20 @@ int myfs_mkp(char* cwd, char* path_host, char* path_myfs)
 		//Write new inode block to disk
 		vdisk_write_block(inode_block_ref, &index_node_block);
 		//Find index node reference for child
-		child = myfs_find_index_node_hole(&index_node_block, inode_block_ref);
+		child = myfs_find_index_node_hole(&index_node_block, &inode_block_ref);
 	}
 	//----------------PARENT DIRECTORY----------------------------
 	BLOCK dir;
 	BLOCK_REFERENCE dir_ref;
 	int dir_index;
-	if (myfs_find_directory_hole(parent, &dir, &dir_ref, dir_index) != 0) {
+	if (myfs_find_directory_hole(parent, &dir, &dir_ref, &dir_index) != 0) {
 		//Allocate new directory block
-		if (myfs_append_new_block_to_existing_block(&volume, &dir, dir_ref) != 0) {
+		if (myfs_append_new_block_to_existing_block(&volume, &dir, &dir_ref) != 0) {
 			if (debug)
 				fprintf(stderr, "Unable to expand parent directory block.\n");
 			return(-8);
 		}
-		myfs_find_directory_hole(parent, &dir, &dir_ref, dir_index);
+		myfs_find_directory_hole(parent, &dir, &dir_ref, &dir_index);
 	}
 	//Set directory entry
 	dir.content.directory.entry[dir_index].index_node_reference = child;
