@@ -203,6 +203,8 @@ int myfs_list(char* cwd, char* path)
 				myfs_read_index_node_by_reference(new_Ref, &new);
 				//If it is, add "/"
 				if (new.type == T_DIRECTORY) strcat(local_name, "/");
+				//Pipe add |
+				if (new.type == T_PIPE) strcat(local_name, "|");
 				//Add name to list of contents
 				strcpy(contents[numOfElements++], local_name);
 				//If we've found all the entires, exit loop
@@ -1044,8 +1046,45 @@ int myfs_link(char* cwd, char* path_src, char* path_dst)
 	if (myfs_path_to_index_node(cwd, path_dst, &parent_dst, &child_dst, local_name) < -1) {
 		return(-6);
 	}
-
-	// TODO: complete implementation
+	if (child_src == UNALLOCATED_INDEX_NODE) {
+		fprintf(stderr, "Invalid file or pipe source.\n");
+		return(-1);
+	}
+	if (parent_dst == UNALLOCATED_INDEX_NODE | child_dst != UNALLOCATED_INDEX_NODE) {
+		fprintf(stderr, "Invalid file or pipe destination.\n");
+		return(-2);
+	}
+	myfs_read_index_node_by_reference(parent_dst, &index_node_dst);
+	myfs_read_index_node_by_reference(child_src, &index_node_src);
+	BLOCK dir;
+	BLOCK_REFERENCE dir_ref;
+	int dir_index;
+	if (myfs_find_directory_hole(index_node_dst.content, &dir, &dir_ref, &dir_index) != 0) {
+		//Read volume block
+		vdisk_read_block(VOLUME_BLOCK_REFERENCE, &volume_block);
+		//Allocate new directory block
+		if (myfs_append_new_block_to_existing_block(&volume_block, &dir, &dir_ref) != 0) {
+			if (debug)
+				fprintf(stderr, "Unable to expand parent directory block.\n");
+			return(-8);
+		}
+		myfs_find_directory_hole(index_node_dst.content, &dir, &dir_ref, &dir_index);
+		//Write volume block
+		vdisk_write_block(VOLUME_BLOCK_REFERENCE, &volume_block);
+	}
+	//Set directory entry
+	dir.content.directory.entry[dir_index].index_node_reference = child_src;
+	strcpy(dir.content.directory.entry[dir_index].name, local_name);
+	//Write parent directory to disk
+	vdisk_write_block(dir_ref, &dir);
+	//Increase size of parent index node
+	index_node_dst.size++;
+	//Write parent index node to disk
+	myfs_write_index_node_by_reference(parent_dst, &index_node_dst);
+	//Increment number of references 
+	index_node_src.references++;
+	//Write index node src back to file
+	myfs_write_index_node_by_reference(child_src, &index_node_src);
 
 	// Success
 	return(0);
