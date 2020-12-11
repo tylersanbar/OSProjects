@@ -648,7 +648,7 @@ MYFILE* myfs_fopen(char* cwd, char* path, char* mode)
 void myfs_fclose(MYFILE* fp) {
 	fp->index_node_reference = UNALLOCATED_INDEX_NODE;
 
-	if (fp->fd_external == -1) {
+	if (fp->fd_external != -1) {
 		close(fp->fd_external);
 		//fprintf(stderr,"Error closing external file.\n");
 		//exit(-1);
