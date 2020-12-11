@@ -616,7 +616,22 @@ MYFILE* myfs_fopen(char* cwd, char* path, char* mode)
 	}
 	else {
 		// A pipe
-		// TODO: complete implementation
+		//Pipe offset always -1
+		fp->offset = -1;
+		//Open underlying Linux file with mode flag and assign external file descriptor
+		fp->fd_external = open(local_name, fp->mode);
+		if (fp->fd_external == NULL) {
+			fprintf(stderr, "Error opening linux file:%s.\n",local_name);
+			return (NULL);
+		}
+		//If pipe doesn't already exist
+		if(index_node.content == UNALLOCATED_BLOCK){
+			//Make pipe
+			if (myfs_mkp(cwd, local_name, path) != 0) {
+				fprintf(stderr, "Unable to make new pipe.\n");
+				return (NULL);
+			}
+		}
 		return(fp);
 	};
 };
@@ -631,8 +646,10 @@ MYFILE* myfs_fopen(char* cwd, char* path, char* mode)
 void myfs_fclose(MYFILE* fp) {
 	fp->index_node_reference = UNALLOCATED_INDEX_NODE;
 
-	// TODO: complete implementation for the case of pipes
-
+	if (close(fp->fd_external) != 0) {
+		fprintf(stderr,"Error closing external file.\n");
+		exit(-1);
+	}
 	free(fp);
 }
 
@@ -802,9 +819,12 @@ int myfs_fwrite(MYFILE* fp, unsigned char* buf, int len)
 	}
 	else {
 		// This is a pipe
-		// TODO: complete implementation for pipes
-		int len_written = 0;
-		return(len_written);
+		int len_read = write(fp->fd_external, buf, len);
+		if (len_read < 0) {
+			fprintf(stderr, "Error writing to external file.\n");
+			exit(-1);
+		}
+		return(len_read);
 	}
 }
 
@@ -888,8 +908,11 @@ int myfs_fread(MYFILE* fp, unsigned char* buf, int len)
 	}
 	else {
 		// This is a pipe
-		// TODO: complete implementation for pipes
-		int len_read = 0;
+		int len_read = read(fp->fd_external, buf, len);
+		if (len_read < 0) {
+			fprintf(stderr,"Error reading from external file.\n");
+			exit(-1);
+		}
 		return(len_read);
 	}
 }
@@ -938,7 +961,6 @@ int myfs_delete_file(char* cwd, char* path)
 		fprintf(stderr, "Not a file or pipe\n");
 		return(-2);
 	}
-
 	// Clean up the parent
 	if (myfs_read_index_node_by_reference(parent, &index_node_parent) != 0) {
 		return(-5);
@@ -947,9 +969,10 @@ int myfs_delete_file(char* cwd, char* path)
 	if (myfs_write_index_node_by_reference(parent, &index_node_parent) != 0) {
 		return(-6);
 	}
-
-	// Remove from directory list
-	if (myfs_remove_directory_entry(index_node_parent.content, local_name) < 0) {
+	//If multiple references, decrement
+	if (index_node.references > 1) index_node.references--;
+	// Only one reference, Remove from directory list
+	else if (myfs_remove_directory_entry(index_node_parent.content, local_name) < 0) {
 		return(-8);
 	}
 
@@ -1122,15 +1145,97 @@ int myfs_mkp(char* cwd, char* path_host, char* path_myfs)
 	char local_name[MAX_PATH_LENGTH];
 	INDEX_NODE index_node_parent;
 	int ret;
-
+	BLOCK volume;
+	//Read volume block
+	vdisk_read_block(VOLUME_BLOCK_REFERENCE, &volume);
 	// Try to find the index_node of the child
 	if ((ret = myfs_path_to_index_node(cwd, path_myfs, &parent, &child, local_name)) < -1) {
 		if (debug)
 			fprintf(stderr, "myfs_mkp(%d)\n", ret);
 		return(-10);
 	}
-
-	// TODO complete implementation
+	//If child exists, error
+	if (ret != -1) {
+		if (debug)
+			fprintf(stderr, "Child exists.\n");
+		return(-9);
+	}
+	//Read parent index node
+	if (myfs_read_index_node_by_reference(parent, &index_node_parent) != 0) {
+		if (debug)
+			fprintf(stderr, "Unable to read parent index node.\n");
+		return(-8);
+	}
+	//Parent must be directory
+	if (index_node_parent.type != T_DIRECTORY) {
+		if (debug)
+			fprintf(stderr, "Parent not a directory.\n");
+		return(-8);
+	}
+	//------------------------CHILD INDEX NODE REFERENCE-------------------------------
+	BLOCK index_node_block;
+	BLOCK_REFERENCE inode_block_ref;
+	//Find index node reference for child
+	child = myfs_find_index_node_hole(&index_node_block, inode_block_ref);
+	//If unable to find an index node
+	if (child == UNALLOCATED_INDEX_NODE) {
+		//Allocate new index node block
+		if (myfs_append_new_block_to_existing_block(&volume, &index_node_block, inode_block_ref) != 0) {
+			if (debug)
+				fprintf(stderr, "Unable to expand index node block.\n");
+			return(-8);
+		}
+		//Write new inode block to disk
+		vdisk_write_block(inode_block_ref, &index_node_block);
+		//Find index node reference for child
+		child = myfs_find_index_node_hole(&index_node_block, inode_block_ref);
+	}
+	//----------------PARENT DIRECTORY----------------------------
+	BLOCK dir;
+	BLOCK_REFERENCE dir_ref;
+	int dir_index;
+	if (myfs_find_directory_hole(parent, &dir, &dir_ref, dir_index) != 0) {
+		//Allocate new directory block
+		if (myfs_append_new_block_to_existing_block(&volume, &dir, dir_ref) != 0) {
+			if (debug)
+				fprintf(stderr, "Unable to expand parent directory block.\n");
+			return(-8);
+		}
+		myfs_find_directory_hole(parent, &dir, &dir_ref, dir_index);
+	}
+	//Set directory entry
+	dir.content.directory.entry[dir_index].index_node_reference = child;
+	strcpy(dir.content.directory.entry[dir_index].name, local_name);
+	//Write parent directory to disk
+	vdisk_write_block(dir_ref, &dir);
+	//Increase size of parent index node
+	index_node_parent.size++;
+	//Write parent index node to disk
+	myfs_write_index_node_by_reference(parent, &index_node_parent);
+	//--------------DATA BLOCK----------------------------------------
+	//Allocate data block
+	BLOCK_REFERENCE data_block_reference = myfs_allocate_new_block(&volume);
+	if (data_block_reference == UNALLOCATED_BLOCK) {
+		fprintf(stderr, "No blocks available for data block.\n");
+		return(-1);
+	}
+	//Initialize data block
+	BLOCK data_block;
+	//Zero out bytes
+	memset(&data_block, 0, BLOCK_SIZE);
+	//Copy path_host to data block
+	memcpy(&data_block, path_host, strlen(path_host));
+	//Set next
+	data_block.next = UNALLOCATED_BLOCK;
+	//Write data block to disk
+	vdisk_write_block(data_block_reference, &data_block);
+	//---------------------CHILD INDEX NODE-----------------
+	INDEX_NODE index_node_child;
+	myfs_set_index_node(&index_node_child, T_PIPE, 1, data_block_reference, 0);
+	//Write child index node
+	myfs_write_index_node_by_reference(child, &index_node_child);
+	//Write volume block back to disk
+	vdisk_write_block(VOLUME_BLOCK_REFERENCE, &volume);
 
 	// All done
 	return(0);

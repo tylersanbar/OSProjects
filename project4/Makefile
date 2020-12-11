@@ -49,6 +49,5 @@ clean:
 	rm $(MOVE)
 	rm $(MKP)
 	rm $(LC)
-	rm project4.zip
 zip:
 	zip project4.zip *.c *.h Makefile README.txt
