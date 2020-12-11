@@ -1,0 +1,66 @@
+24a25
+> fox.txt
+27c28,34
+< fox.txt
+---
+> /
+> /
+> /
+> /
+> /
+> /
+> /
+29,30d35
+< Fox in socks.
+< Knox on fox in socks in box.
+32c37
+< N_ALLOCATED_BLOCKS: 8
+---
+> N_ALLOCATED_BLOCKS: 9
+36c41
+< 01: 00
+---
+> 01: 01
+70a76
+> Entry 2: name="fox.txt", index_node=2
+86c92
+< Size: 4
+---
+> Size: 3
+96,100c102
+< Entry 3: name="fox.txt", index_node=2
+< Next block: 65534
+< Fox in socks.
+< Knox on fox in socks in box.
+< Socks on Knox and Knox in box.
+---
+> Next block: 8
+102c104
+< N_ALLOCATED_BLOCKS: 8
+---
+> N_ALLOCATED_BLOCKS: 10
+106c108
+< 01: 00
+---
+> 01: 03
+125c127
+< Size: 6
+---
+> Size: 5
+132,133c134
+< Entry 5: name="oldfox.txt", index_node=5
+< Next block: 65534
+---
+> Next block: 9
+141a143
+> Entry 2: name="fox.txt", index_node=2
+157c159
+< Size: 3
+---
+> Size: 2
+166,167c168,169
+< Entry 3: name="fox.txt", index_node=2
+< Next block: 65534
+---
+> Entry 2: name="newfox.txt", index_node=5
+> Next block: 8
