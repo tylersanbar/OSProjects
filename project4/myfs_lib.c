@@ -4,7 +4,7 @@
 #include "string.h"
 
 // Yes ... a global variable
-int debug = 1;
+int debug = 0;
 
 /**
  Read the MYFS_PWD, MYFS_DISK environment
