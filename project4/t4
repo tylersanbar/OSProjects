@@ -1,0 +1,83 @@
+../
+./
+stories/
+../
+./
+fox.txt
+Fox in socks.
+Knox on fox in socks in box.
+../
+./
+newfox.txt
+stories/
+to_read/
+../
+./
+fox.txt
+../
+./
+newfox.txt
+Fox in socks.
+Knox on fox in socks in box.
+N_BLOCKS: 128
+N_ALLOCATED_BLOCKS: 8
+N_ALLOCATED_INDEX_NODES: 6
+Block allocation table:
+00: ff
+01: 00
+02: 00
+03: 00
+04: 00
+05: 00
+06: 00
+07: 00
+08: 00
+09: 00
+10: 00
+11: 00
+12: 00
+13: 00
+14: 00
+15: 00
+Index node: 0
+Type: DIRECTORY
+Nreferences: 1
+Content block: 2
+Size: 5
+Directory at block 2:
+Entry 0: name=".", index_node=0
+Entry 1: name="..", index_node=0
+Entry 2: name="stories", index_node=1
+Entry 3: name="newfox.txt", index_node=3
+Entry 4: name="to_read", index_node=4
+Next block: 65534
+Index node: 1
+Type: DIRECTORY
+Nreferences: 1
+Content block: 3
+Size: 3
+Directory at block 3:
+Entry 0: name=".", index_node=1
+Entry 1: name="..", index_node=0
+Entry 2: name="fox.txt", index_node=2
+Next block: 65534
+Index node: 2
+Type: FILE
+Nreferences: 1
+Content block: 4
+Size: 43
+Index node: 3
+Type: FILE
+Nreferences: 1
+Content block: 5
+Size: 43
+Index node: 4
+Type: DIRECTORY
+Nreferences: 1
+Content block: 6
+Size: 3
+Directory at block 6:
+Entry 0: name=".", index_node=4
+Entry 1: name="..", index_node=0
+Entry 2: name="newfox.txt", index_node=5
+Next block: 65534
