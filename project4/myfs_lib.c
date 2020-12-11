@@ -650,8 +650,8 @@ void myfs_fclose(MYFILE* fp) {
 
 	if (fp->fd_external == -1) {
 		close(fp->fd_external);
-		fprintf(stderr,"Error closing external file.\n");
-		exit(-1);
+		//fprintf(stderr,"Error closing external file.\n");
+		//exit(-1);
 	}
 	free(fp);
 }
