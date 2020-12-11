@@ -1189,11 +1189,11 @@ int myfs_move(char* cwd, char* path_src, char* path_dst)
 	BLOCK dir;
 	BLOCK_REFERENCE dir_ref;
 	int dir_index;
-	if (myfs_find_directory_hole(index_node_dst.content, &dir_ref, &dir, &child_dst_index) != 0) {
+	if (myfs_find_directory_hole(index_node_dst.content, &dir, &dir_ref, &child_dst_index) != 0) {
 		//Read volume block
 		vdisk_read_block(VOLUME_BLOCK_REFERENCE, &volume_block);
 		//Allocate new directory block
-		if (myfs_append_new_block_to_existing_block(&volume_block, &dir, &child_dst_index) != 0) {
+		if (myfs_append_new_block_to_existing_block(&volume_block, &dir, &dir_ref) != 0) {
 			if (debug)
 				fprintf(stderr, "Unable to expand parent directory block.\n");
 			return(-8);
