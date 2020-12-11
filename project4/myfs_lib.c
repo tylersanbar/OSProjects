@@ -1299,14 +1299,14 @@ int myfs_mkp(char* cwd, char* path_host, char* path_myfs)
 	BLOCK dir;
 	BLOCK_REFERENCE dir_ref;
 	int dir_index;
-	if (myfs_find_directory_hole(parent, &dir, &dir_ref, &dir_index) != 0) {
+	if (myfs_find_directory_hole(&index_node_parent.content, &dir, &dir_ref, &dir_index) != 0) {
 		//Allocate new directory block
 		if (myfs_append_new_block_to_existing_block(&volume, &dir, &dir_ref) != 0) {
 			if (debug)
 				fprintf(stderr, "Unable to expand parent directory block.\n");
 			return(-8);
 		}
-		myfs_find_directory_hole(parent, &dir, &dir_ref, &dir_index);
+		myfs_find_directory_hole(&index_node_parent.content, &dir, &dir_ref, &dir_index);
 	}
 	//Set directory entry
 	dir.content.directory.entry[dir_index].index_node_reference = child;
