@@ -16,7 +16,8 @@ echo Running Tests
 echo Finished Running Tests
 
 echo Making diff files
-diff Tests/project4_test1.out t1.out> t1diff
+
+diff Tests/project4_test1.out t1.out > t1diff
 diff Tests/project4_test2.out t2.out > t2diff
 diff Tests/project4_test3.out t3.out > t3diff
 diff Tests/project4_test4.out t4.out > t4diff
