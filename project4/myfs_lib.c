@@ -1131,6 +1131,8 @@ int myfs_move(char* cwd, char* path_src, char* path_dst)
 	BLOCK_REFERENCE parent_dst_ref;
 	int child_dst_index;
 	char path_dst_copy[MAX_PATH_LENGTH];
+	char* useName;
+	INDEX_NODE_REFERENCE final_dst;
 
 	// Save the dest path
 	strncpy(path_dst_copy, path_dst, MAX_PATH_LENGTH);
@@ -1144,8 +1146,71 @@ int myfs_move(char* cwd, char* path_src, char* path_dst)
 		&parent_dst_block, &parent_dst_ref, &child_dst_index) < -1) {
 		return(-6);
 	}
+	//Error if src child doesn't exist
+	if (child_src == UNALLOCATED_INDEX_NODE) {
+		fprintf(stderr, "Invalid file.\n");
+		return (-1);
+	}
+	myfs_read_index_node_by_reference(parent_dst, &index_node_dst);
+	//Case 1: SRC and DEST parents are the same-------------------
+	if (parent_src == parent_dst) {
+		//Change name of entry to destination name
+		strcpy(parent_src_block.content.directory.entry[child_dst_index].name, local_name_dst);
+		vdisk_write_block(index_node_dst.content, &parent_src_block);
+	}
+	//Case 2:Different Parents-----------------------------------
+	//2a.Destination child exists--------------------------------
+	if (child_dst != UNALLOCATED_INDEX_NODE) {
+		//child dst will be final destination
+		final_dst = child_dst;
+		myfs_read_index_node_by_reference(child_dst, &index_node_dst);
+		if (index_node_dst.type != T_DIRECTORY) {
+			fprintf(stderr, "Can not move. File with this name already exists.\n");
+			return(-1);
+		}
+		//We will use src for the name
+		useName = local_name_src;
 
-	// TODO: complete implementation
+	}
+	//2b.Destination child doesn't exist------------------------
+	//Parent destination will be final destination
+	final_dst = parent_dst;
+	//We use dst for the name
+	useName = local_name_dst;
+	//Remove directory entry from parent src------------
+	myfs_read_index_node_by_reference(parent_src, &index_node_src);
+	parent_src_block.content.directory.entry[child_src_index].index_node_reference = UNALLOCATED_INDEX_NODE;
+	strcpy(parent_src_block.content.directory.entry[child_src_index].name, "");
+	//Decrement size of src parent index node
+	index_node_src.size--;
+	//Write src parent index node to disk
+	myfs_write_index_node_by_reference(parent_src, &index_node_src);
+	//Add entry to destination directory------------------
+	BLOCK dir;
+	BLOCK_REFERENCE dir_ref;
+	int dir_index;
+	if (myfs_find_directory_hole(index_node_dst.content, &dir_ref, &dir, &child_dst_index) != 0) {
+		//Read volume block
+		vdisk_read_block(VOLUME_BLOCK_REFERENCE, &volume_block);
+		//Allocate new directory block
+		if (myfs_append_new_block_to_existing_block(&volume_block, &dir, &child_dst_index) != 0) {
+			if (debug)
+				fprintf(stderr, "Unable to expand parent directory block.\n");
+			return(-8);
+		}
+		myfs_find_directory_hole(index_node_dst.content, &dir, &dir_ref, &child_dst_index);
+		//Write volume block
+		vdisk_write_block(VOLUME_BLOCK_REFERENCE, &volume_block);
+	}
+	//Set directory entry
+	dir.content.directory.entry[dir_index].index_node_reference = child_src;
+	strcpy(dir.content.directory.entry[dir_index].name, useName);
+	//Write parent directory to disk
+	vdisk_write_block(dir_ref, &dir);
+	//Increase size of final destination index node
+	index_node_dst.size++;
+	//Write parent index node to disk
+	myfs_write_index_node_by_reference(final_dst, &index_node_dst);
 
 	// Success
 	return(0);
